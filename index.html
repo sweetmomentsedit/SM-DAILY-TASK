@@ -1,523 +1,289 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editing Team Daily Work Schedule</title>
-
+<title>Editing Team Daily Report</title>
 <style>
-:root {
-  --blue:#365b86;
-  --blue-dark:#28496f;
-  --line:#64748b;
-  --paper:#fff;
-  --ink:#172033;
-}
-
-* { box-sizing:border-box; }
-
-body {
-  margin:0;
-  padding:24px;
-  background:#eef2f6;
-  color:var(--ink);
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-.page {
-  max-width:850px;
-  margin:auto;
-  background:var(--paper);
-  padding:28px;
-  box-shadow:0 3px 18px #17203318;
-}
-
-header {
-  text-align:center;
-  margin-bottom:18px;
-}
-
-h1 {
-  margin:0 0 8px;
-  color:var(--blue);
-  font-size:25px;
-  letter-spacing:.3px;
-}
-
-.subtitle {
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:14px;
-}
-
-.meta {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:12px;
-  font-size:13px;
-}
-
-.date-wrap {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:600;
-}
-
-input[type="date"] {
-  border:1px solid #9aa8b8;
-  border-radius:4px;
-  padding:6px;
-  font:inherit;
-}
-
-.table-wrap {
-  width:100%;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  table-layout:fixed;
-}
-
-th,td {
-  border:1px solid var(--line);
-  padding:5px 3px;
-  vertical-align:middle;
-}
-
-th {
-  background:var(--blue);
-  color:white;
-  font-size:10px;
-  text-align:center;
-  height:34px;
-}
-
-td {
-  height:32px;
-  font-size:10px;
-}
-
-td.time {
-  font-weight:600;
-  white-space:nowrap;
-  background:#f4f7fa;
-  text-align:center;
-}
-
-select {
-  width:100%;
-  min-width:0;
-  border:0;
-  background:transparent;
-  font:inherit;
-  color:inherit;
-  padding:5px 1px;
-  outline:none;
-  cursor:pointer;
-}
-
-select:focus {
-  background:#fff8d9;
-}
-
-.custom-task {
-  width:100%;
-  border:0;
-  outline:none;
-  font:inherit;
-  padding:4px 2px;
-  background:transparent;
-}
-
-.notes {
-  margin-top:16px;
-  border:1.5px solid #334155;
-}
-
-.notes-title {
-  background:#e8edf3;
-  padding:7px 9px;
-  font-weight:700;
-  font-size:13px;
-  border-bottom:1px solid #64748b;
-}
-
-.note-line {
-  height:32px;
-  border-bottom:1px solid #94a3b8;
-  padding:5px 9px;
-  outline:none;
-  font-size:12px;
-}
-
-.note-line:last-child {
-  border-bottom:0;
-}
-
-.note-line:focus {
-  background:#fff8d9;
-}
-
-.actions {
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin:20px auto 0;
-  flex-wrap:wrap;
-}
-
-button {
-  border:0;
-  border-radius:5px;
-  padding:10px 17px;
-  color:white;
-  background:var(--blue);
-  font-weight:700;
-  cursor:pointer;
-}
-
-button:hover {
-  background:var(--blue-dark);
-}
-
-button.secondary {
-  background:#64748b;
-}
-
-.hint {
-  text-align:center;
-  color:#64748b;
-  font-size:11px;
-  margin-top:10px;
-}
-
-@media print {
-  @page {
-    size:A4 portrait;
-    margin:8mm;
+  :root {
+    --green:#397b45; --green-dark:#285d33; --green-light:#eaf3eb;
+    --line:#9aa9a0; --ink:#17251b; --muted:#5e6d62; --paper:#fff;
   }
-
-  body {
-    padding:0;
-    background:white;
+  * { box-sizing:border-box; }
+  body { margin:0; padding:22px; background:#edf2ee; color:var(--ink); font-family:Arial,Helvetica,sans-serif; }
+  .page { max-width:1050px; margin:auto; padding:25px; background:var(--paper); box-shadow:0 3px 18px #17251b18; }
+  header { text-align:center; margin-bottom:15px; }
+  h1 { margin:0 0 5px; color:var(--green-dark); font-size:25px; letter-spacing:.3px; }
+  .subtitle { font-size:13px; font-weight:600; color:#405347; }
+  .meta { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; margin:16px 0 12px; font-size:13px; }
+  .date-wrap { display:flex; align-items:center; gap:8px; font-weight:700; }
+  input[type="date"] { padding:6px; border:1px solid var(--line); border-radius:4px; font:inherit; }
+  .summary { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0; }
+  .stat { border:1px solid #b8c8bb; border-radius:5px; padding:8px; text-align:center; background:#f7faf7; }
+  .stat strong { display:block; color:var(--green-dark); font-size:19px; }
+  .stat span { font-size:11px; color:var(--muted); font-weight:700; }
+  .section-title { margin:15px 0 7px; padding:7px 9px; background:var(--green); color:white; font-size:13px; font-weight:700; letter-spacing:.2px; }
+  .table-wrap { width:100%; }
+  table { width:100%; border-collapse:collapse; table-layout:fixed; }
+  th,td { border:1px solid var(--line); padding:5px; vertical-align:middle; }
+  th { background:var(--green-light); color:#244d2d; font-size:11px; text-align:left; }
+  td { font-size:10px; }
+  td.person { width:12%; font-weight:700; text-align:center; }
+  td select, td input { width:100%; min-width:0; padding:5px 3px; border:1px solid #c5d0c7; border-radius:3px; background:#fff; color:var(--ink); font:inherit; font-size:10px; }
+  td .custom-task { margin-top:4px; display:none; }
+  td .custom-task.show { display:block; }
+  .priority-high { color:#b42318; font-weight:700; }
+  .priority-medium { color:#9a6700; font-weight:700; }
+  .priority-low { color:#26723a; font-weight:700; }
+  .status-completed { color:#26723a; font-weight:700; }
+  .goals { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; border:1px solid var(--line); padding:8px 10px; }
+  .goal { display:flex; align-items:flex-start; gap:7px; min-height:24px; padding:3px 0; font-size:11px; }
+  .goal input { margin:1px 0 0; accent-color:var(--green); }
+  .notes-box { border:1px solid var(--line); min-height:48px; padding:7px; font-size:11px; }
+  .notes-box[contenteditable="true"]:focus { outline:2px solid #d5a52b; background:#fffdf2; }
+  .signatures { display:grid; grid-template-columns:1fr 1fr; gap:35px; margin:22px 8px 5px; }
+  .signature { border-top:1px solid #33443a; padding-top:6px; text-align:center; font-size:11px; font-weight:700; }
+  .actions { display:flex; gap:9px; justify-content:center; flex-wrap:wrap; margin:20px auto 0; }
+  button { border:0; border-radius:5px; padding:10px 16px; color:white; background:var(--green); font-weight:700; cursor:pointer; }
+  button:hover { background:var(--green-dark); }
+  button.secondary { background:#64748b; }
+  .hint { text-align:center; color:var(--muted); font-size:11px; margin-top:9px; }
+  @media(max-width:650px) {
+    body { padding:7px; } .page { padding:12px; }
+    h1 { font-size:19px; } .summary { grid-template-columns:repeat(2,1fr); }
+    .goals { grid-template-columns:1fr; }
+    .table-wrap { overflow-x:auto; } table { min-width:650px; }
   }
-
-  .page {
-    max-width:none;
-    padding:0;
-    box-shadow:none;
+  @media print {
+    @page { size:A4 portrait; margin:8mm; }
+    body { padding:0; background:#fff; }
+    .page { max-width:none; padding:0; box-shadow:none; }
+    h1 { font-size:18px; } .subtitle { font-size:10px; }
+    .actions,.hint { display:none !important; }
+    .meta { margin:8px 0; font-size:10px; }
+    input[type="date"] { border:0; padding:0; appearance:none; }
+    .summary { gap:5px; margin:7px 0; }
+    .stat { padding:5px; } .stat strong { font-size:14px; } .stat span { font-size:9px; }
+    .section-title { margin:9px 0 5px; padding:5px 7px; font-size:10px; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    th,td { padding:3px; }
+    th { font-size:8px; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    td { font-size:8px; }
+    td select,td input { padding:3px 2px; font-size:8px; border:0; appearance:none; -webkit-appearance:none; }
+    td .custom-task { display:none !important; }
+    .goals { padding:5px 7px; gap:0 8px; }
+    .goal { min-height:18px; font-size:8px; padding:2px 0; }
+    .notes-box { min-height:35px; font-size:9px; }
+    .signatures { margin-top:17px; }
+    .signature { font-size:9px; }
   }
-
-  h1 {
-    font-size:18px;
-  }
-
-  .subtitle {
-    font-size:11px;
-    margin-bottom:10px;
-  }
-
-  .actions, .hint {
-    display:none !important;
-  }
-
-  th {
-    background:var(--blue) !important;
-    color:white !important;
-    print-color-adjust:exact;
-    -webkit-print-color-adjust:exact;
-    font-size:8px;
-    padding:4px 2px;
-    height:27px;
-  }
-
-  td {
-    height:25px;
-    padding:3px 2px;
-    font-size:8px;
-  }
-
-  td.time {
-    font-size:8px;
-  }
-
-  select {
-    appearance:none;
-    -webkit-appearance:none;
-    font-size:8px;
-    padding:2px 0;
-  }
-
-  .notes {
-    margin-top:10px;
-  }
-
-  .note-line {
-    height:25px;
-  }
-
-  input[type="date"] {
-    border:0;
-    padding:0;
-    appearance:none;
-  }
-}
-
-@media (max-width:600px) {
-  body { padding:8px; }
-  .page { padding:12px; }
-  h1 { font-size:18px; }
-  .table-wrap { overflow-x:auto; }
-  table { min-width:650px; }
-}
 </style>
 </head>
-
 <body>
-
 <div class="page">
+  <header>
+    <h1>EDITING TEAM DAILY WORK REPORT</h1>
+    <div class="subtitle">Samuel and Noel | Working Hours: 10:30 AM – 9:30 PM</div>
+  </header>
 
-<header>
-  <h1>SM OPERATION DAILY WORK SCHEDULE</h1>
-  <div class="subtitle">
-    Working Hours: 10:30 AM - 9:30 PM
-  </div>
-</header>
-
-<div class="meta">
-  <div class="date-wrap">
-    <label for="reportDate">REPORT DATE:</label>
-    <input id="reportDate" type="date">
+  <div class="meta">
+    <div class="date-wrap"><label for="reportDate">REPORT DATE:</label><input id="reportDate" type="date"></div>
+    <div><strong>TEAM:</strong> Samuel &amp; Noel</div>
+    <div><strong>REPORT:</strong> Daily task and order tracking</div>
   </div>
 
-  <div><strong>TEAM:</strong> DECORATORS</div>
-</div>
+  <div class="summary" aria-live="polite">
+    <div class="stat"><strong id="samuelCount">0</strong><span>SAMUEL TASKS</span></div>
+    <div class="stat"><strong id="noelCount">0</strong><span>NOEL TASKS</span></div>
+    <div class="stat"><strong id="completedCount">0</strong><span>COMPLETED TASKS</span></div>
+    <div class="stat"><strong id="pendingCount">0</strong><span>PENDING TASKS</span></div>
+  </div>
 
-<div class="table-wrap">
+  <div class="section-title">DAILY TASK ASSIGNMENTS</div>
+  <div class="table-wrap">
+    <table aria-label="Daily task assignments">
+      <colgroup>
+        <col style="width:11%"><col style="width:13%"><col style="width:31%">
+        <col style="width:13%"><col style="width:19%"><col style="width:13%">
+      </colgroup>
+      <thead>
+        <tr><th>TIME</th><th>ASSIGNED TO</th><th>TASK</th><th>PRIORITY</th><th>STATUS</th><th>ORDER NO.</th></tr>
+      </thead>
+      <tbody id="taskRows"></tbody>
+    </table>
+  </div>
 
-<table aria-label="Daily editing team report">
+  <div class="section-title">DAILY GOALS / CHECKLIST</div>
+  <div class="goals" id="goals">
+    <label class="goal"><input type="checkbox">Complete assigned editing orders.</label>
+    <label class="goal"><input type="checkbox">Check pending orders.</label>
+    <label class="goal"><input type="checkbox">Prioritize urgent orders.</label>
+    <label class="goal"><input type="checkbox">Review spelling and design details.</label>
+    <label class="goal"><input type="checkbox">Check image quality and resolution.</label>
+    <label class="goal"><input type="checkbox">Prepare files for printing or production.</label>
+    <label class="goal"><input type="checkbox">Coordinate with Cookies Team.</label>
+    <label class="goal"><input type="checkbox">Coordinate with Figurine Team.</label>
+    <label class="goal"><input type="checkbox">Coordinate with Flower Team.</label>
+    <label class="goal"><input type="checkbox">Check completed orders.</label>
+    <label class="goal"><input type="checkbox">Report unfinished tasks.</label>
+    <label class="goal"><input type="checkbox">Prepare tomorrow's priority list.</label>
+  </div>
 
-<colgroup>
-  <col style="width:13%">
-  <col style="width:29%">
-  <col style="width:12%">
-  <col style="width:15%">
-  <col style="width:17%">
-  <col style="width:14%">
-</colgroup>
+  <div class="section-title">ADDITIONAL NOTES / HANDOVER</div>
+  <div class="notes-box" contenteditable="true" aria-label="Additional notes and handover"></div>
 
-<thead>
-<tr>
-  <th>TIME</th>
-  <th>TASK / ASSIGNED TEAM</th>
-  <th>PRIORITY</th>
-  <th>STATUS</th>
-  <th>CAKE TYPE</th>
-  <th>ORDER NO.</th>
-</tr>
-</thead>
+  <div class="signatures">
+    <div class="signature">SAMUEL – SIGNATURE</div>
+    <div class="signature">NOEL – SIGNATURE</div>
+  </div>
 
-<tbody id="scheduleRows"></tbody>
-
-</table>
-</div>
-
-<section class="notes">
-  <div class="notes-title">DAILY GOALS / NOTES</div>
-  <div class="note-line" contenteditable="true"></div>
-  <div class="note-line" contenteditable="true"></div>
-  <div class="note-line" contenteditable="true"></div>
-</section>
-
-<div class="actions">
-  <button type="button" onclick="window.print()">
-    PRINT DAILY REPORT
-  </button>
-
-  <button type="button" class="secondary" onclick="clearReport()">
-    CLEAR REPORT
-  </button>
-</div>
-
-<div class="hint">
-  Select a task, priority, status and cake type from the dropdowns.
-  Use Other / Custom Task to enter a task manually.
-</div>
-
+  <div class="actions">
+    <button type="button" onclick="window.print()">PRINT A4 DAILY REPORT</button>
+    <button type="button" class="secondary" onclick="newWorkingDay()">CLEAR REPORT / NEXT WORKING DAY</button>
+  </div>
+  <div class="hint">Select a task from the dropdown. Choose “Other / Custom Task” to type a task. Counts update automatically. No database or internet connection required.</div>
 </div>
 
 <script>
-
-const times = [];
-
-let hour = 10;
-let minute = 30;
-
-while (true) {
-
-  const suffix = hour >= 12 ? "PM" : "AM";
-
-  let displayHour = hour % 12;
-  if (displayHour === 0) displayHour = 12;
-
-  times.push(
-    `${displayHour}:${String(minute).padStart(2,"0")} ${suffix}`
-  );
-
-  if (hour === 21 && minute === 30) break;
-
-  minute += 30;
-
-  if (minute === 60) {
-    minute = 0;
-    hour++;
-  }
-}
-
 const taskOptions = [
-  "Christal Task",
-  "Juliano Task",
-  "Altaf Task",
-  "Michelle Task",
-  "Joan Task",
-  "Hensly Task",
-  "Cookies Team Task",
-  "Figurine Task",
-  "Flower Team Task",
-  "Other / Custom Task"
+  "Assign Decor", "Joan", "Hensly", "Altaf", "Michelle", "Christal",
+  "Juliano", "Cookies Team", "Figurine Team", "Flower Team", "Other / Custom Task"
 ];
+const priorities = ["", "🔴 High", "🟡 Medium", "🟢 Low"];
+const statuses = ["", "Not Started", "In Progress", "Completed", "Pending Approval", "On Hold", "Delayed"];
 
-const priorityOptions = [
-  "",
-  "High",
-  "Medium",
-  "Low"
-];
-
-const statusOptions = [
-  "",
-  "Not Started",
-  "In Progress",
-  "Completed",
-  "On Hold"
-];
-
-const cakeOptions = [
-  "",
-  "Frosted Cake",
-  "Fondant Cake",
-  "Shape Cake"
-];
-
-function makeOptions(items) {
-  return items.map(item =>
-    `<option value="${item}">${item}</option>`
-  ).join("");
+function makeSelect(options, label) {
+  const select = document.createElement("select");
+  select.setAttribute("aria-label", label);
+  options.forEach(value => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value || "Select";
+    select.appendChild(option);
+  });
+  return select;
 }
 
-const tbody = document.getElementById("scheduleRows");
+function buildRows() {
+  const tbody = document.getElementById("taskRows");
+  let hour = 10, minute = 30;
+  while (true) {
+    const suffix = hour >= 12 ? "PM" : "AM";
+    let displayHour = hour % 12;
+    if (!displayHour) displayHour = 12;
+    const time = `${displayHour}:${String(minute).padStart(2,"0")} ${suffix}`;
 
-times.forEach(time => {
+    ["Samuel", "Noel"].forEach((person, index) => {
+      const tr = document.createElement("tr");
+      if (index === 0) {
+        const timeCell = document.createElement("td");
+        timeCell.rowSpan = 2;
+        timeCell.textContent = time;
+        timeCell.style.fontWeight = "700";
+        timeCell.style.textAlign = "center";
+        tr.appendChild(timeCell);
+      }
+      const personCell = document.createElement("td");
+      personCell.className = "person";
+      personCell.textContent = person;
+      tr.appendChild(personCell);
 
-  const tr = document.createElement("tr");
+      const taskCell = document.createElement("td");
+      const taskSelect = makeSelect(["", ...taskOptions], `${person} task at ${time}`);
+      taskSelect.className = "task-select";
+      const custom = document.createElement("input");
+      custom.type = "text";
+      custom.placeholder = "Enter custom task";
+      custom.className = "custom-task";
+      custom.setAttribute("aria-label", `${person} custom task at ${time}`);
+      taskSelect.addEventListener("change", () => {
+        custom.classList.toggle("show", taskSelect.value === "Other / Custom Task");
+        if (taskSelect.value !== "Other / Custom Task") custom.value = "";
+        updateSummary();
+      });
+      custom.addEventListener("input", updateSummary);
+      taskCell.append(taskSelect, custom);
+      tr.appendChild(taskCell);
 
-  tr.innerHTML = `
-    <td class="time">${time}</td>
+      const priorityCell = document.createElement("td");
+      const prioritySelect = makeSelect(priorities, `${person} priority at ${time}`);
+      prioritySelect.addEventListener("change", () => {
+        prioritySelect.className = prioritySelect.value.includes("High") ? "priority-high" :
+          prioritySelect.value.includes("Medium") ? "priority-medium" :
+          prioritySelect.value.includes("Low") ? "priority-low" : "";
+      });
+      priorityCell.appendChild(prioritySelect);
+      tr.appendChild(priorityCell);
 
-    <td>
-      <select class="task-select"
-        aria-label="Task at ${time}"
-        onchange="toggleCustomTask(this)">
-        <option value=""></option>
-        ${makeOptions(taskOptions)}
-      </select>
+      const statusCell = document.createElement("td");
+      const statusSelect = makeSelect(statuses, `${person} status at ${time}`);
+      statusSelect.className = "status-select";
+      statusSelect.addEventListener("change", updateSummary);
+      statusCell.appendChild(statusSelect);
+      tr.appendChild(statusCell);
 
-      <input class="custom-task"
-        type="text"
-        placeholder="Custom task"
-        aria-label="Custom task at ${time}"
-        style="display:none;">
-    </td>
+      const orderCell = document.createElement("td");
+      const orderInput = document.createElement("input");
+      orderInput.type = "text";
+      orderInput.placeholder = "Order #";
+      orderInput.setAttribute("aria-label", `${person} order number at ${time}`);
+      orderCell.appendChild(orderInput);
+      tr.appendChild(orderCell);
 
-    <td>
-      <select aria-label="Priority at ${time}">
-        ${makeOptions(priorityOptions)}
-      </select>
-    </td>
+      tbody.appendChild(tr);
+    });
 
-    <td>
-      <select aria-label="Status at ${time}">
-        ${makeOptions(statusOptions)}
-      </select>
-    </td>
-
-    <td>
-      <select aria-label="Cake type at ${time}">
-        ${makeOptions(cakeOptions)}
-      </select>
-    </td>
-
-    <td contenteditable="true"
-      aria-label="Order number at ${time}">
-    </td>
-  `;
-
-  tbody.appendChild(tr);
-
-});
-
-function toggleCustomTask(select) {
-
-  const input = select.parentElement.querySelector(".custom-task");
-
-  if (select.value === "Other / Custom Task") {
-    input.style.display = "block";
-    input.focus();
-  } else {
-    input.style.display = "none";
-    input.value = "";
+    if (hour === 21 && minute === 30) break;
+    minute += 30;
+    if (minute === 60) { minute = 0; hour++; }
   }
-
+  tbody.addEventListener("input", updateSummary);
+  tbody.addEventListener("change", updateSummary);
 }
 
-const now = new Date();
-
-const localDate = new Date(
-  now.getTime() - now.getTimezoneOffset() * 60000
-).toISOString().slice(0,10);
-
-document.getElementById("reportDate").value = localDate;
-
-function clearReport() {
-
-  if (!confirm(
-    "Clear all tasks, priorities, statuses, cake types, order numbers and notes?"
-  )) return;
-
-  document.querySelectorAll("select").forEach(el => {
-    el.selectedIndex = 0;
-  });
-
-  document.querySelectorAll(".custom-task").forEach(el => {
-    el.value = "";
-    el.style.display = "none";
-  });
-
-  document.querySelectorAll(
-    'td[contenteditable="true"], .note-line'
-  ).forEach(el => {
-    el.textContent = "";
-  });
-
+function hasTask(row) {
+  const selected = row.querySelector(".task-select")?.value || "";
+  const custom = row.querySelector(".custom-task")?.value.trim() || "";
+  return selected && (selected !== "Other / Custom Task" || custom.length > 0);
 }
 
+function updateSummary() {
+  const rows = [...document.querySelectorAll("#taskRows tr")];
+  const validRows = rows.filter(hasTask);
+  const samuel = rows.filter(row => row.querySelector(".person")?.textContent === "Samuel" && hasTask(row)).length;
+  const noel = rows.filter(row => row.querySelector(".person")?.textContent === "Noel" && hasTask(row)).length;
+  const completed = validRows.filter(row => row.querySelector(".status-select")?.value === "Completed").length;
+  document.getElementById("samuelCount").textContent = samuel;
+  document.getElementById("noelCount").textContent = noel;
+  document.getElementById("completedCount").textContent = completed;
+  document.getElementById("pendingCount").textContent = validRows.length - completed;
+}
+
+function localDateString(date) {
+  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0,10);
+}
+function nextWorkingDay(date) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + 1);
+  while (next.getDay() === 0 || next.getDay() === 6) next.setDate(next.getDate() + 1);
+  return next;
+}
+function newWorkingDay() {
+  if (!confirm("Clear this report and prepare a blank report for the next working day?")) return;
+  document.querySelectorAll("#taskRows select").forEach(el => el.selectedIndex = 0);
+  document.querySelectorAll("#taskRows input").forEach(el => el.value = "");
+  document.querySelectorAll(".custom-task").forEach(el => el.classList.remove("show"));
+  document.querySelectorAll("#goals input[type=checkbox]").forEach(el => el.checked = false);
+  document.querySelector(".notes-box").textContent = "";
+  const current = document.getElementById("reportDate").value
+    ? new Date(document.getElementById("reportDate").value + "T12:00:00")
+    : new Date();
+  document.getElementById("reportDate").value = localDateString(nextWorkingDay(current));
+  updateSummary();
+}
+document.getElementById("reportDate").value = localDateString(new Date());
+buildRows();
+updateSummary();
 </script>
-
 </body>
 </html>
