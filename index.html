@@ -1,289 +1,1032 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editing Team Daily Report</title>
+<title>Editing Team Daily Work Report</title>
+
 <style>
-  :root {
-    --green:#397b45; --green-dark:#285d33; --green-light:#eaf3eb;
-    --line:#9aa9a0; --ink:#17251b; --muted:#5e6d62; --paper:#fff;
+:root {
+  --green:#397b45;
+  --green-dark:#285d33;
+  --green-light:#eaf3eb;
+  --line:#9aa9a0;
+  --ink:#17251b;
+  --muted:#5e6d62;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  padding:22px;
+  background:#edf2ee;
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.page {
+  max-width:1050px;
+  margin:auto;
+  padding:25px;
+  background:#fff;
+  box-shadow:0 3px 18px #17251b18;
+}
+
+header {
+  text-align:center;
+  margin-bottom:15px;
+}
+
+h1 {
+  margin:0 0 5px;
+  color:var(--green-dark);
+  font-size:25px;
+}
+
+.subtitle {
+  font-size:13px;
+  font-weight:600;
+  color:#405347;
+}
+
+.meta {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin:16px 0 12px;
+  font-size:13px;
+}
+
+.date-wrap,
+.report-selector {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+}
+
+input[type="date"] {
+  padding:6px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  font:inherit;
+}
+
+.report-selector select {
+  padding:7px 10px;
+  border:1px solid var(--green);
+  border-radius:4px;
+  background:var(--green-light);
+  color:var(--green-dark);
+  font-weight:700;
+  font-size:13px;
+}
+
+.summary {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:12px 0;
+}
+
+.stat {
+  border:1px solid #b8c8bb;
+  border-radius:5px;
+  padding:8px;
+  text-align:center;
+  background:#f7faf7;
+}
+
+.stat strong {
+  display:block;
+  color:var(--green-dark);
+  font-size:19px;
+}
+
+.stat span {
+  font-size:11px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+.section-title {
+  margin:15px 0 7px;
+  padding:7px 9px;
+  background:var(--green);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+}
+
+.table-wrap { width:100%; }
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+th,td {
+  border:1px solid var(--line);
+  padding:5px;
+  vertical-align:middle;
+  overflow-wrap:break-word;
+}
+
+th {
+  background:var(--green-light);
+  color:#244d2d;
+  font-size:11px;
+  text-align:center;
+}
+
+td { font-size:10px; }
+
+td.time-cell {
+  font-weight:700;
+  text-align:center;
+  white-space:nowrap;
+}
+
+td select,
+td input {
+  width:100%;
+  min-width:0;
+  padding:5px 3px;
+  border:1px solid #c5d0c7;
+  border-radius:3px;
+  background:#fff;
+  color:var(--ink);
+  font:inherit;
+  font-size:10px;
+}
+
+td .custom-task {
+  margin-top:4px;
+  display:none;
+}
+
+td .custom-task.show { display:block; }
+
+.priority-high { color:#b42318; font-weight:700; }
+.priority-medium { color:#9a6700; font-weight:700; }
+.priority-low { color:#26723a; font-weight:700; }
+
+.goals {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 14px;
+  border:1px solid var(--line);
+  padding:8px 10px;
+}
+
+.goal {
+  display:flex;
+  align-items:flex-start;
+  gap:7px;
+  min-height:24px;
+  padding:3px 0;
+  font-size:11px;
+}
+
+.goal input {
+  margin:1px 0 0;
+  accent-color:var(--green);
+}
+
+.notes-box {
+  border:1px solid var(--line);
+  min-height:48px;
+  padding:7px;
+  font-size:11px;
+}
+
+.notes-box:focus {
+  outline:2px solid #d5a52b;
+  background:#fffdf2;
+}
+
+.signatures {
+  display:grid;
+  grid-template-columns:1fr;
+  margin:22px 8px 5px;
+}
+
+.signature {
+  max-width:45%;
+  margin:auto;
+  width:100%;
+  border-top:1px solid #33443a;
+  padding-top:6px;
+  text-align:center;
+  font-size:11px;
+  font-weight:700;
+}
+
+.actions {
+  display:flex;
+  gap:9px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:20px auto 0;
+}
+
+button {
+  border:0;
+  border-radius:5px;
+  padding:10px 16px;
+  color:white;
+  background:var(--green);
+  font-weight:700;
+  cursor:pointer;
+}
+
+button:hover { background:var(--green-dark); }
+button.secondary { background:#64748b; }
+
+.hint {
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:9px;
+}
+
+/* PERSON SELECTION */
+body.show-samuel #noelRows {
+  display:none !important;
+}
+
+body.show-noel #samuelRows {
+  display:none !important;
+}
+
+/* MOBILE */
+@media(max-width:650px) {
+  body { padding:7px; }
+  .page { padding:12px; }
+  h1 { font-size:19px; }
+  .summary { grid-template-columns:repeat(3,1fr); }
+  .goals { grid-template-columns:1fr; }
+  .table-wrap { overflow-x:auto; }
+  table { min-width:600px; }
+}
+
+
+
+/* ONE PAGE A4 PORTRAIT PRINT */
+@media print {
+
+  @page {
+    size: A4 portrait;
+    margin: 5mm;
   }
-  * { box-sizing:border-box; }
-  body { margin:0; padding:22px; background:#edf2ee; color:var(--ink); font-family:Arial,Helvetica,sans-serif; }
-  .page { max-width:1050px; margin:auto; padding:25px; background:var(--paper); box-shadow:0 3px 18px #17251b18; }
-  header { text-align:center; margin-bottom:15px; }
-  h1 { margin:0 0 5px; color:var(--green-dark); font-size:25px; letter-spacing:.3px; }
-  .subtitle { font-size:13px; font-weight:600; color:#405347; }
-  .meta { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; margin:16px 0 12px; font-size:13px; }
-  .date-wrap { display:flex; align-items:center; gap:8px; font-weight:700; }
-  input[type="date"] { padding:6px; border:1px solid var(--line); border-radius:4px; font:inherit; }
-  .summary { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0; }
-  .stat { border:1px solid #b8c8bb; border-radius:5px; padding:8px; text-align:center; background:#f7faf7; }
-  .stat strong { display:block; color:var(--green-dark); font-size:19px; }
-  .stat span { font-size:11px; color:var(--muted); font-weight:700; }
-  .section-title { margin:15px 0 7px; padding:7px 9px; background:var(--green); color:white; font-size:13px; font-weight:700; letter-spacing:.2px; }
-  .table-wrap { width:100%; }
-  table { width:100%; border-collapse:collapse; table-layout:fixed; }
-  th,td { border:1px solid var(--line); padding:5px; vertical-align:middle; }
-  th { background:var(--green-light); color:#244d2d; font-size:11px; text-align:left; }
-  td { font-size:10px; }
-  td.person { width:12%; font-weight:700; text-align:center; }
-  td select, td input { width:100%; min-width:0; padding:5px 3px; border:1px solid #c5d0c7; border-radius:3px; background:#fff; color:var(--ink); font:inherit; font-size:10px; }
-  td .custom-task { margin-top:4px; display:none; }
-  td .custom-task.show { display:block; }
-  .priority-high { color:#b42318; font-weight:700; }
-  .priority-medium { color:#9a6700; font-weight:700; }
-  .priority-low { color:#26723a; font-weight:700; }
-  .status-completed { color:#26723a; font-weight:700; }
-  .goals { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; border:1px solid var(--line); padding:8px 10px; }
-  .goal { display:flex; align-items:flex-start; gap:7px; min-height:24px; padding:3px 0; font-size:11px; }
-  .goal input { margin:1px 0 0; accent-color:var(--green); }
-  .notes-box { border:1px solid var(--line); min-height:48px; padding:7px; font-size:11px; }
-  .notes-box[contenteditable="true"]:focus { outline:2px solid #d5a52b; background:#fffdf2; }
-  .signatures { display:grid; grid-template-columns:1fr 1fr; gap:35px; margin:22px 8px 5px; }
-  .signature { border-top:1px solid #33443a; padding-top:6px; text-align:center; font-size:11px; font-weight:700; }
-  .actions { display:flex; gap:9px; justify-content:center; flex-wrap:wrap; margin:20px auto 0; }
-  button { border:0; border-radius:5px; padding:10px 16px; color:white; background:var(--green); font-weight:700; cursor:pointer; }
-  button:hover { background:var(--green-dark); }
-  button.secondary { background:#64748b; }
-  .hint { text-align:center; color:var(--muted); font-size:11px; margin-top:9px; }
-  @media(max-width:650px) {
-    body { padding:7px; } .page { padding:12px; }
-    h1 { font-size:19px; } .summary { grid-template-columns:repeat(2,1fr); }
-    .goals { grid-template-columns:1fr; }
-    .table-wrap { overflow-x:auto; } table { min-width:650px; }
+
+  html, body {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
   }
-  @media print {
-    @page { size:A4 portrait; margin:8mm; }
-    body { padding:0; background:#fff; }
-    .page { max-width:none; padding:0; box-shadow:none; }
-    h1 { font-size:18px; } .subtitle { font-size:10px; }
-    .actions,.hint { display:none !important; }
-    .meta { margin:8px 0; font-size:10px; }
-    input[type="date"] { border:0; padding:0; appearance:none; }
-    .summary { gap:5px; margin:7px 0; }
-    .stat { padding:5px; } .stat strong { font-size:14px; } .stat span { font-size:9px; }
-    .section-title { margin:9px 0 5px; padding:5px 7px; font-size:10px; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
-    th,td { padding:3px; }
-    th { font-size:8px; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
-    td { font-size:8px; }
-    td select,td input { padding:3px 2px; font-size:8px; border:0; appearance:none; -webkit-appearance:none; }
-    td .custom-task { display:none !important; }
-    .goals { padding:5px 7px; gap:0 8px; }
-    .goal { min-height:18px; font-size:8px; padding:2px 0; }
-    .notes-box { min-height:35px; font-size:9px; }
-    .signatures { margin-top:17px; }
-    .signature { font-size:9px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
+
+  .page {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  header {
+    margin-bottom: 5px;
+  }
+
+  h1 {
+    font-size: 19px;
+    margin-bottom: 2px;
+  }
+
+  .subtitle {
+    font-size: 9px;
+  }
+
+  .meta {
+    margin: 6px 0;
+    font-size: 9px;
+    gap: 6px;
+  }
+
+  input[type="date"] {
+    border: 0;
+    padding: 0;
+    font-size: 9px;
+  }
+
+  .report-selector select {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 9px;
+    appearance: none;
+  }
+
+  .summary {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin: 5px 0;
+  }
+
+  .stat {
+    padding: 5px;
+  }
+
+  .stat strong {
+    font-size: 15px;
+  }
+
+  .stat span {
+    font-size: 8px;
+  }
+
+  .section-title {
+    margin: 7px 0 3px;
+    padding: 5px 7px;
+    font-size: 9px;
+    break-after: avoid;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 3px 4px;
+    line-height: 1.05;
+  }
+
+  th {
+    font-size: 8px;
+  }
+
+  td {
+    font-size: 8px;
+  }
+
+  td.time-cell {
+    font-size: 8px;
+  }
+
+  td select,
+  td input {
+    padding: 2px;
+    font-size: 7.5px;
+    border: 0;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  td .custom-task {
+    display: none !important;
+  }
+
+  td .custom-task.show {
+    display: block !important;
+  }
+
+  .goals {
+    grid-template-columns: 1fr 1fr;
+    padding: 5px 7px;
+    gap: 1px 8px;
+  }
+
+  .goal {
+    min-height: 17px;
+    font-size: 8px;
+    padding: 2px 0;
+    gap: 5px;
+  }
+
+  .goal input {
+    transform: scale(.85);
+    transform-origin: top left;
+  }
+
+  .notes-box {
+    min-height: 38px;
+    padding: 5px;
+    font-size: 9px;
+  }
+
+  .signatures {
+    margin: 18px 8px 4px;
+  }
+
+  .signature {
+    max-width: 45%;
+    font-size: 9px;
+    padding-top: 5px;
+  }
+
+  .actions,
+  .hint {
+    display: none !important;
+  }
+
+  body.show-samuel #noelRows,
+  body.show-noel #samuelRows {
+    display: none !important;
+  }
+
+  .page,
+  .table-wrap,
+  .goals,
+  .notes-box,
+  .signatures {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
 </style>
 </head>
-<body>
+
+<body class="show-samuel">
+
 <div class="page">
+
   <header>
     <h1>EDITING TEAM DAILY WORK REPORT</h1>
-    <div class="subtitle">Samuel and Noel | Working Hours: 10:30 AM – 9:30 PM</div>
+    <div class="subtitle">
+      Working Hours: 10:30 AM – 9:30 PM
+    </div>
   </header>
 
   <div class="meta">
-    <div class="date-wrap"><label for="reportDate">REPORT DATE:</label><input id="reportDate" type="date"></div>
-    <div><strong>TEAM:</strong> Samuel &amp; Noel</div>
-    <div><strong>REPORT:</strong> Daily task and order tracking</div>
+
+    <div class="date-wrap">
+      <label for="reportDate">REPORT DATE:</label>
+      <input id="reportDate" type="date">
+    </div>
+
+    <div class="report-selector">
+      <label for="personSelect">SELECT REPORT:</label>
+      <select id="personSelect" onchange="switchPerson()">
+        <option value="Samuel">SAMUEL TASK</option>
+        <option value="Noel">NOEL TASK</option>
+      </select>
+    </div>
+
+    <div>
+      <strong>PERSON:</strong>
+      <span id="personLabel">SAMUEL</span>
+    </div>
+
   </div>
 
+  <!-- SUMMARY -->
   <div class="summary" aria-live="polite">
-    <div class="stat"><strong id="samuelCount">0</strong><span>SAMUEL TASKS</span></div>
-    <div class="stat"><strong id="noelCount">0</strong><span>NOEL TASKS</span></div>
-    <div class="stat"><strong id="completedCount">0</strong><span>COMPLETED TASKS</span></div>
-    <div class="stat"><strong id="pendingCount">0</strong><span>PENDING TASKS</span></div>
+
+    <div class="stat">
+      <strong id="taskCount">0</strong>
+      <span id="taskLabel">SAMUEL TASKS</span>
+    </div>
+
+    <div class="stat">
+      <strong id="completedCount">0</strong>
+      <span>COMPLETED TASKS</span>
+    </div>
+
+    <div class="stat">
+      <strong id="pendingCount">0</strong>
+      <span>PENDING TASKS</span>
+    </div>
+
   </div>
 
   <div class="section-title">DAILY TASK ASSIGNMENTS</div>
+
   <div class="table-wrap">
+
     <table aria-label="Daily task assignments">
+
       <colgroup>
-        <col style="width:11%"><col style="width:13%"><col style="width:31%">
-        <col style="width:13%"><col style="width:19%"><col style="width:13%">
+        <col style="width:12%">
+        <col style="width:24%">
+        <col style="width:14%">
+        <col style="width:23%">
+        <col style="width:27%">
       </colgroup>
+
       <thead>
-        <tr><th>TIME</th><th>ASSIGNED TO</th><th>TASK</th><th>PRIORITY</th><th>STATUS</th><th>ORDER NO.</th></tr>
+        <tr>
+          <th>TIME</th>
+          <th>TASK</th>
+          <th>PRIORITY</th>
+          <th>STATUS</th>
+          <th>ORDER NO.</th>
+        </tr>
       </thead>
-      <tbody id="taskRows"></tbody>
+
+      <tbody id="samuelRows"></tbody>
+      <tbody id="noelRows" style="display:none;"></tbody>
+
     </table>
   </div>
 
+  <!-- DAILY GOALS -->
   <div class="section-title">DAILY GOALS / CHECKLIST</div>
+
   <div class="goals" id="goals">
-    <label class="goal"><input type="checkbox">Complete assigned editing orders.</label>
-    <label class="goal"><input type="checkbox">Check pending orders.</label>
-    <label class="goal"><input type="checkbox">Prioritize urgent orders.</label>
-    <label class="goal"><input type="checkbox">Review spelling and design details.</label>
-    <label class="goal"><input type="checkbox">Check image quality and resolution.</label>
-    <label class="goal"><input type="checkbox">Prepare files for printing or production.</label>
-    <label class="goal"><input type="checkbox">Coordinate with Cookies Team.</label>
-    <label class="goal"><input type="checkbox">Coordinate with Figurine Team.</label>
-    <label class="goal"><input type="checkbox">Coordinate with Flower Team.</label>
-    <label class="goal"><input type="checkbox">Check completed orders.</label>
-    <label class="goal"><input type="checkbox">Report unfinished tasks.</label>
-    <label class="goal"><input type="checkbox">Prepare tomorrow's priority list.</label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Complete assigned editing orders.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Check pending orders.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Prioritize urgent orders.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Review spelling and design details.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Check image quality and resolution.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Prepare files for printing or production.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Coordinate with Cookies Team.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Coordinate with Figurine Team.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Coordinate with Flower Team.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Check completed orders.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Report unfinished tasks.
+    </label>
+
+    <label class="goal">
+      <input type="checkbox">
+      Prepare tomorrow's priority list.
+    </label>
+
   </div>
 
+  <!-- NOTES -->
   <div class="section-title">ADDITIONAL NOTES / HANDOVER</div>
-  <div class="notes-box" contenteditable="true" aria-label="Additional notes and handover"></div>
 
+  <div class="notes-box"
+       contenteditable="true"
+       aria-label="Additional notes and handover"></div>
+
+  <!-- SIGNATURE -->
   <div class="signatures">
-    <div class="signature">SAMUEL – SIGNATURE</div>
-    <div class="signature">NOEL – SIGNATURE</div>
+    <div class="signature" id="signatureName">
+      SAMUEL – SIGNATURE
+    </div>
   </div>
 
+  <!-- BUTTONS -->
   <div class="actions">
-    <button type="button" onclick="window.print()">PRINT A4 DAILY REPORT</button>
-    <button type="button" class="secondary" onclick="newWorkingDay()">CLEAR REPORT / NEXT WORKING DAY</button>
+
+    <button type="button" onclick="printReport()">
+      PRINT A4 DAILY REPORT
+    </button>
+
+    <button type="button"
+            class="secondary"
+            onclick="newWorkingDay()">
+      CLEAR REPORT / NEXT WORKING DAY
+    </button>
+
   </div>
-  <div class="hint">Select a task from the dropdown. Choose “Other / Custom Task” to type a task. Counts update automatically. No database or internet connection required.</div>
+
+  <div class="hint">
+    Select SAMUEL TASK or NOEL TASK to display and print
+    only that person's daily report.
+    Records are kept separately.
+  </div>
+
 </div>
 
 <script>
-const taskOptions = [
-  "Assign Decor", "Joan", "Hensly", "Altaf", "Michelle", "Christal",
-  "Juliano", "Cookies Team", "Figurine Team", "Flower Team", "Other / Custom Task"
-];
-const priorities = ["", "🔴 High", "🟡 Medium", "🟢 Low"];
-const statuses = ["", "Not Started", "In Progress", "Completed", "Pending Approval", "On Hold", "Delayed"];
 
+const taskOptions = [
+  "Assign Decor",
+  "Joan",
+  "Hensly",
+  "Altaf",
+  "Michelle",
+  "Christal",
+  "Juliano",
+  "Cookies Team",
+  "Figurine Team",
+  "Flower Team",
+  "Other / Custom Task"
+];
+
+const priorities = [
+  "",
+  "🔴 High",
+  "🟡 Medium",
+  "🟢 Low"
+];
+
+const statuses = [
+  "",
+  "Not Started",
+  "In Progress",
+  "Completed",
+  "Pending Approval",
+  "On Hold",
+  "Delayed"
+];
+
+/* CREATE SELECT OPTIONS */
 function makeSelect(options, label) {
+
   const select = document.createElement("select");
+
   select.setAttribute("aria-label", label);
+
   options.forEach(value => {
+
     const option = document.createElement("option");
+
     option.value = value;
     option.textContent = value || "Select";
+
     select.appendChild(option);
+
   });
+
   return select;
 }
 
-function buildRows() {
-  const tbody = document.getElementById("taskRows");
-  let hour = 10, minute = 30;
+/* CREATE DAILY TIME ROWS */
+function buildRows(person, tbodyId) {
+
+  const tbody = document.getElementById(tbodyId);
+
+  let hour = 10;
+  let minute = 30;
+
   while (true) {
+
     const suffix = hour >= 12 ? "PM" : "AM";
+
     let displayHour = hour % 12;
+
     if (!displayHour) displayHour = 12;
-    const time = `${displayHour}:${String(minute).padStart(2,"0")} ${suffix}`;
 
-    ["Samuel", "Noel"].forEach((person, index) => {
-      const tr = document.createElement("tr");
-      if (index === 0) {
-        const timeCell = document.createElement("td");
-        timeCell.rowSpan = 2;
-        timeCell.textContent = time;
-        timeCell.style.fontWeight = "700";
-        timeCell.style.textAlign = "center";
-        tr.appendChild(timeCell);
+    const time =
+      `${displayHour}:${String(minute).padStart(2,"0")} ${suffix}`;
+
+    const tr = document.createElement("tr");
+
+    /* TIME */
+    const timeCell = document.createElement("td");
+
+    timeCell.className = "time-cell";
+    timeCell.textContent = time;
+
+    tr.appendChild(timeCell);
+
+    /* TASK */
+    const taskCell = document.createElement("td");
+
+    const taskSelect = makeSelect(
+      ["", ...taskOptions],
+      `${person} task at ${time}`
+    );
+
+    taskSelect.className = "task-select";
+
+    const custom = document.createElement("input");
+
+    custom.type = "text";
+    custom.placeholder = "Enter custom task";
+    custom.className = "custom-task";
+
+    taskSelect.addEventListener("change", () => {
+
+      custom.classList.toggle(
+        "show",
+        taskSelect.value === "Other / Custom Task"
+      );
+
+      if (taskSelect.value !== "Other / Custom Task") {
+        custom.value = "";
       }
-      const personCell = document.createElement("td");
-      personCell.className = "person";
-      personCell.textContent = person;
-      tr.appendChild(personCell);
 
-      const taskCell = document.createElement("td");
-      const taskSelect = makeSelect(["", ...taskOptions], `${person} task at ${time}`);
-      taskSelect.className = "task-select";
-      const custom = document.createElement("input");
-      custom.type = "text";
-      custom.placeholder = "Enter custom task";
-      custom.className = "custom-task";
-      custom.setAttribute("aria-label", `${person} custom task at ${time}`);
-      taskSelect.addEventListener("change", () => {
-        custom.classList.toggle("show", taskSelect.value === "Other / Custom Task");
-        if (taskSelect.value !== "Other / Custom Task") custom.value = "";
-        updateSummary();
-      });
-      custom.addEventListener("input", updateSummary);
-      taskCell.append(taskSelect, custom);
-      tr.appendChild(taskCell);
+      updateSummary();
 
-      const priorityCell = document.createElement("td");
-      const prioritySelect = makeSelect(priorities, `${person} priority at ${time}`);
-      prioritySelect.addEventListener("change", () => {
-        prioritySelect.className = prioritySelect.value.includes("High") ? "priority-high" :
-          prioritySelect.value.includes("Medium") ? "priority-medium" :
-          prioritySelect.value.includes("Low") ? "priority-low" : "";
-      });
-      priorityCell.appendChild(prioritySelect);
-      tr.appendChild(priorityCell);
-
-      const statusCell = document.createElement("td");
-      const statusSelect = makeSelect(statuses, `${person} status at ${time}`);
-      statusSelect.className = "status-select";
-      statusSelect.addEventListener("change", updateSummary);
-      statusCell.appendChild(statusSelect);
-      tr.appendChild(statusCell);
-
-      const orderCell = document.createElement("td");
-      const orderInput = document.createElement("input");
-      orderInput.type = "text";
-      orderInput.placeholder = "Order #";
-      orderInput.setAttribute("aria-label", `${person} order number at ${time}`);
-      orderCell.appendChild(orderInput);
-      tr.appendChild(orderCell);
-
-      tbody.appendChild(tr);
     });
 
+    custom.addEventListener("input", updateSummary);
+
+    taskCell.append(taskSelect, custom);
+
+    tr.appendChild(taskCell);
+
+    /* PRIORITY */
+    const priorityCell = document.createElement("td");
+
+    const prioritySelect = makeSelect(
+      priorities,
+      `${person} priority at ${time}`
+    );
+
+    prioritySelect.addEventListener("change", () => {
+
+      prioritySelect.className =
+        prioritySelect.value.includes("High") ? "priority-high" :
+        prioritySelect.value.includes("Medium") ? "priority-medium" :
+        prioritySelect.value.includes("Low") ? "priority-low" : "";
+
+    });
+
+    priorityCell.appendChild(prioritySelect);
+
+    tr.appendChild(priorityCell);
+
+    /* STATUS */
+    const statusCell = document.createElement("td");
+
+    const statusSelect = makeSelect(
+      statuses,
+      `${person} status at ${time}`
+    );
+
+    statusSelect.className = "status-select";
+
+    statusSelect.addEventListener("change", updateSummary);
+
+    statusCell.appendChild(statusSelect);
+
+    tr.appendChild(statusCell);
+
+    /* ORDER NUMBER */
+    const orderCell = document.createElement("td");
+
+    const orderInput = document.createElement("input");
+
+    orderInput.type = "text";
+    orderInput.placeholder = "Order #";
+
+    orderInput.setAttribute(
+      "aria-label",
+      `${person} order number at ${time}`
+    );
+
+    orderCell.appendChild(orderInput);
+
+    tr.appendChild(orderCell);
+
+    tbody.appendChild(tr);
+
+    /* STOP AT 9:30 PM */
     if (hour === 21 && minute === 30) break;
+
     minute += 30;
-    if (minute === 60) { minute = 0; hour++; }
+
+    if (minute === 60) {
+      minute = 0;
+      hour++;
+    }
+
   }
+
   tbody.addEventListener("input", updateSummary);
   tbody.addEventListener("change", updateSummary);
+
 }
 
-function hasTask(row) {
-  const selected = row.querySelector(".task-select")?.value || "";
-  const custom = row.querySelector(".custom-task")?.value.trim() || "";
-  return selected && (selected !== "Other / Custom Task" || custom.length > 0);
-}
+/* SWITCH BETWEEN SAMUEL AND NOEL */
+function switchPerson() {
 
-function updateSummary() {
-  const rows = [...document.querySelectorAll("#taskRows tr")];
-  const validRows = rows.filter(hasTask);
-  const samuel = rows.filter(row => row.querySelector(".person")?.textContent === "Samuel" && hasTask(row)).length;
-  const noel = rows.filter(row => row.querySelector(".person")?.textContent === "Noel" && hasTask(row)).length;
-  const completed = validRows.filter(row => row.querySelector(".status-select")?.value === "Completed").length;
-  document.getElementById("samuelCount").textContent = samuel;
-  document.getElementById("noelCount").textContent = noel;
-  document.getElementById("completedCount").textContent = completed;
-  document.getElementById("pendingCount").textContent = validRows.length - completed;
-}
+  const selected =
+    document.getElementById("personSelect").value;
 
-function localDateString(date) {
-  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  return local.toISOString().slice(0,10);
-}
-function nextWorkingDay(date) {
-  const next = new Date(date);
-  next.setDate(next.getDate() + 1);
-  while (next.getDay() === 0 || next.getDay() === 6) next.setDate(next.getDate() + 1);
-  return next;
-}
-function newWorkingDay() {
-  if (!confirm("Clear this report and prepare a blank report for the next working day?")) return;
-  document.querySelectorAll("#taskRows select").forEach(el => el.selectedIndex = 0);
-  document.querySelectorAll("#taskRows input").forEach(el => el.value = "");
-  document.querySelectorAll(".custom-task").forEach(el => el.classList.remove("show"));
-  document.querySelectorAll("#goals input[type=checkbox]").forEach(el => el.checked = false);
-  document.querySelector(".notes-box").textContent = "";
-  const current = document.getElementById("reportDate").value
-    ? new Date(document.getElementById("reportDate").value + "T12:00:00")
-    : new Date();
-  document.getElementById("reportDate").value = localDateString(nextWorkingDay(current));
+  document.body.classList.remove("show-samuel", "show-noel");
+
+  document.body.classList.add(
+    selected === "Samuel" ? "show-samuel" : "show-noel"
+  );
+
+  document.getElementById("samuelRows").style.display =
+    selected === "Samuel" ? "table-row-group" : "none";
+
+  document.getElementById("noelRows").style.display =
+    selected === "Noel" ? "table-row-group" : "none";
+
+  document.getElementById("personLabel").textContent =
+    selected.toUpperCase();
+
+  document.getElementById("taskLabel").textContent =
+    selected.toUpperCase() + " TASKS";
+
+  document.getElementById("signatureName").textContent =
+    selected.toUpperCase() + " – SIGNATURE";
+
   updateSummary();
+
 }
-document.getElementById("reportDate").value = localDateString(new Date());
-buildRows();
+
+/* CHECK IF ROW HAS A TASK */
+function hasTask(row) {
+
+  const selected =
+    row.querySelector(".task-select")?.value || "";
+
+  const custom =
+    row.querySelector(".custom-task")?.value.trim() || "";
+
+  return selected &&
+    (selected !== "Other / Custom Task" || custom.length > 0);
+
+}
+
+/* UPDATE SELECTED PERSON SUMMARY */
+function updateSummary() {
+
+  const selected =
+    document.getElementById("personSelect").value;
+
+  const rows = [
+    ...document.querySelectorAll(
+      selected === "Samuel"
+        ? "#samuelRows tr"
+        : "#noelRows tr"
+    )
+  ];
+
+  const validRows = rows.filter(hasTask);
+
+  const completed = validRows.filter(row =>
+    row.querySelector(".status-select")?.value === "Completed"
+  ).length;
+
+  document.getElementById("taskCount").textContent =
+    validRows.length;
+
+  document.getElementById("completedCount").textContent =
+    completed;
+
+  document.getElementById("pendingCount").textContent =
+    validRows.length - completed;
+
+}
+
+/* PRINT ONLY THE SELECTED PERSON */
+function printReport() {
+
+  switchPerson();
+
+  window.print();
+
+}
+
+/* LOCAL DATE */
+function localDateString(date) {
+
+  const local = new Date(
+    date.getTime() - date.getTimezoneOffset() * 60000
+  );
+
+  return local.toISOString().slice(0,10);
+
+}
+
+/* NEXT WORKING DAY */
+function nextWorkingDay(date) {
+
+  const next = new Date(date);
+
+  next.setDate(next.getDate() + 1);
+
+  while (
+    next.getDay() === 0 ||
+    next.getDay() === 6
+  ) {
+    next.setDate(next.getDate() + 1);
+  }
+
+  return next;
+
+}
+
+/* CLEAR BOTH REPORTS */
+function newWorkingDay() {
+
+  if (!confirm(
+    "Clear both Samuel and Noel reports and prepare a blank report for the next working day?"
+  )) return;
+
+  /* CLEAR ALL TASK SELECTS */
+  document.querySelectorAll(
+    "#samuelRows select, #noelRows select"
+  ).forEach(el => {
+    el.selectedIndex = 0;
+    el.className = el.classList.contains("status-select")
+      ? "status-select"
+      : el.className.includes("task-select")
+        ? "task-select"
+        : "";
+  });
+
+  /* CLEAR ALL INPUTS */
+  document.querySelectorAll(
+    "#samuelRows input, #noelRows input"
+  ).forEach(el => {
+    el.value = "";
+    el.classList.remove("show");
+  });
+
+  /* RESET GOALS */
+  document.querySelectorAll(
+    "#goals input[type=checkbox]"
+  ).forEach(el => {
+    el.checked = false;
+  });
+
+  /* CLEAR NOTES */
+  document.querySelector(".notes-box").textContent = "";
+
+  /* NEXT WORKING DATE */
+  const current =
+    document.getElementById("reportDate").value
+      ? new Date(
+          document.getElementById("reportDate").value + "T12:00:00"
+        )
+      : new Date();
+
+  document.getElementById("reportDate").value =
+    localDateString(nextWorkingDay(current));
+
+  /* RETURN TO SAMUEL */
+  document.getElementById("personSelect").value = "Samuel";
+
+  switchPerson();
+
+}
+
+/* INITIALIZE */
+document.getElementById("reportDate").value =
+  localDateString(new Date());
+
+buildRows("Samuel", "samuelRows");
+buildRows("Noel", "noelRows");
+
+switchPerson();
 updateSummary();
+
 </script>
+
 </body>
 </html>
