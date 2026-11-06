@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editing Team Daily Work Report</title>
+<title>SM Team Daily Work Report</title>
 
 <style>
 :root {
@@ -255,14 +255,7 @@ button.secondary { background:#64748b; }
   margin-top:9px;
 }
 
-/* PERSON SELECTION */
-body.show-samuel #noelRows {
-  display:none !important;
-}
 
-body.show-noel #samuelRows {
-  display:none !important;
-}
 
 /* MOBILE */
 @media(max-width:650px) {
@@ -472,7 +465,7 @@ body.show-noel #samuelRows {
 <div class="page">
 
   <header>
-    <h1>EDITING TEAM DAILY WORK REPORT</h1>
+    <h1>SM fIGURINE TEAM DAILY WORK REPORT</h1>
     <div class="subtitle">
       Working Hours: 10:30 AM – 9:30 PM
     </div>
@@ -487,10 +480,16 @@ body.show-noel #samuelRows {
 
     <div class="report-selector">
       <label for="personSelect">SELECT REPORT:</label>
-      <select id="personSelect" onchange="switchPerson()">
-        <option value="Samuel">SAMUEL TASK</option>
-        <option value="Noel">NOEL TASK</option>
-      </select>
+     <select id="personSelect" onchange="switchPerson()">
+  <option value="Samuel">SAMUEL TASK</option>
+  <option value="Noel">NOEL TASK</option>
+  <option value="Ronelyn">RONELYN TASK</option>
+  <option value="Jeangay">JEANGAY TASK</option>
+  <option value="Melanie">MELANIE TASK</option>
+  <option value="Nea">NEA TASK</option>
+  <option value="Eva">EVA TASK</option>
+  <option value="Kimberly">KIMBERLY TASK</option>
+</select>
     </div>
 
     <div>
@@ -544,8 +543,14 @@ body.show-noel #samuelRows {
         </tr>
       </thead>
 
-      <tbody id="samuelRows"></tbody>
-      <tbody id="noelRows" style="display:none;"></tbody>
+     <tbody id="rows-samuel" class="person-rows"></tbody>
+<tbody id="rows-noel" class="person-rows"></tbody>
+<tbody id="rows-ronelyn" class="person-rows"></tbody>
+<tbody id="rows-jeangay" class="person-rows"></tbody>
+<tbody id="rows-melanie" class="person-rows"></tbody>
+<tbody id="rows-nea" class="person-rows"></tbody>
+<tbody id="rows-eva" class="person-rows"></tbody>
+<tbody id="rows-kimberly" class="person-rows"></tbody>
 
     </table>
   </div>
@@ -847,23 +852,24 @@ function buildRows(person, tbodyId) {
 
 }
 
-/* SWITCH BETWEEN SAMUEL AND NOEL */
 function switchPerson() {
 
   const selected =
     document.getElementById("personSelect").value;
 
-  document.body.classList.remove("show-samuel", "show-noel");
+  // Hide all reports
+  document.querySelectorAll(".person-rows").forEach(tbody => {
+    tbody.style.display = "none";
+  });
 
-  document.body.classList.add(
-    selected === "Samuel" ? "show-samuel" : "show-noel"
+  // Show only selected person's report
+  const selectedRows = document.getElementById(
+    "rows-" + selected.toLowerCase()
   );
 
-  document.getElementById("samuelRows").style.display =
-    selected === "Samuel" ? "table-row-group" : "none";
-
-  document.getElementById("noelRows").style.display =
-    selected === "Noel" ? "table-row-group" : "none";
+  if (selectedRows) {
+    selectedRows.style.display = "table-row-group";
+  }
 
   document.getElementById("personLabel").textContent =
     selected.toUpperCase();
@@ -875,7 +881,6 @@ function switchPerson() {
     selected.toUpperCase() + " – SIGNATURE";
 
   updateSummary();
-
 }
 
 /* CHECK IF ROW HAS A TASK */
@@ -892,19 +897,16 @@ function hasTask(row) {
 
 }
 
-/* UPDATE SELECTED PERSON SUMMARY */
 function updateSummary() {
 
   const selected =
     document.getElementById("personSelect").value;
 
-  const rows = [
-    ...document.querySelectorAll(
-      selected === "Samuel"
-        ? "#samuelRows tr"
-        : "#noelRows tr"
-    )
-  ];
+  const tbody = document.getElementById(
+    "rows-" + selected.toLowerCase()
+  );
+
+  const rows = [...tbody.querySelectorAll("tr")];
 
   const validRows = rows.filter(hasTask);
 
@@ -920,7 +922,6 @@ function updateSummary() {
 
   document.getElementById("pendingCount").textContent =
     validRows.length - completed;
-
 }
 
 /* PRINT ONLY THE SELECTED PERSON */
@@ -970,7 +971,7 @@ function newWorkingDay() {
 
   /* CLEAR ALL TASK SELECTS */
   document.querySelectorAll(
-    "#samuelRows select, #noelRows select"
+    ".person-rows select"
   ).forEach(el => {
     el.selectedIndex = 0;
     el.className = el.classList.contains("status-select")
@@ -982,7 +983,7 @@ function newWorkingDay() {
 
   /* CLEAR ALL INPUTS */
   document.querySelectorAll(
-    "#samuelRows input, #noelRows input"
+    ".person-rows input"
   ).forEach(el => {
     el.value = "";
     el.classList.remove("show");
@@ -1020,8 +1021,23 @@ function newWorkingDay() {
 document.getElementById("reportDate").value =
   localDateString(new Date());
 
-buildRows("Samuel", "samuelRows");
-buildRows("Noel", "noelRows");
+const employees = [
+  "Samuel",
+  "Noel",
+  "Ronelyn",
+  "Jeangay",
+  "Melanie",
+  "Nea",
+  "Eva",
+  "Kimberly"
+];
+
+employees.forEach(person => {
+  buildRows(
+    person,
+    "rows-" + person.toLowerCase()
+  );
+});
 
 switchPerson();
 updateSummary();
