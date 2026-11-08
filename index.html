@@ -140,17 +140,18 @@ td {
 }
 
 .time-connector {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  color:var(--blue);
-  font-weight:bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--blue);
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 18px;
+  margin: 1px 0;
 }
 
-.time-connector .line {
-  height:10px;
-  width:2px;
-  background:var(--blue);
+.time-arrow {
+  display: block;
 }
 
 .cell-editor {
@@ -350,7 +351,13 @@ button.secondary {
     margin-top: 3px;
   }
 }
-
+@media print {
+  .time-connector {
+    font-size: 15px;
+    line-height: 14px;
+    margin: 0;
+  }
+}
 @media print {
   @page {
     size:A4 portrait;
@@ -887,11 +894,9 @@ function addRow(taskNumber, minimumStart = availableTimes[0].value) {
           ${makeTimeOptions(minimumStart, "", "Select start")}
         </select>
 
-        <div class="time-connector">
-          <div class="line"></div>
-          ↓
-          <div class="line"></div>
-        </div>
+       <div class="time-connector">
+  <span class="time-arrow">↓</span>
+</div>
 
         <select class="time-select finish-time" disabled>
           <option value="">Select start first</option>
