@@ -798,9 +798,9 @@ button.secondary {
 
 <div class="actions">
 
-  <button onclick="window.print()" type="button">
-    PRINT DAILY REPORT
-  </button>
+  <button onclick="validateAndPrint()" type="button">
+  PRINT DAILY REPORT
+</button>
 
   <button onclick="clearReport()" type="button"
     class="secondary">
@@ -1069,7 +1069,27 @@ const localDate = new Date(
 ).toISOString().slice(0,10);
 
 document.getElementById("reportDate").value = localDate;
+// Validate required fields before printing.
+function validateAndPrint() {
 
+  const assignedName = document.getElementById("assignedName").value;
+  const department = document.getElementById("departmentSelect").value;
+
+  if (!assignedName) {
+    alert("PLEASE SELECT ASSIGNED TO NAME BEFORE PRINTING!");
+    document.getElementById("assignedName").focus();
+    return;
+  }
+
+  if (!department) {
+    alert("PLEASE SELECT DEPARTMENT BEFORE PRINTING!");
+    document.getElementById("departmentSelect").focus();
+    return;
+  }
+
+  // All required fields are selected.
+  window.print();
+}
 // Clear report.
 function clearReport() {
 
