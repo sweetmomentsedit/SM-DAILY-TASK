@@ -4,125 +4,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SM Decor Team Daily Work Report</title>
+<title>SM Operation Daily Work Schedule</title>
 
 <style>
 :root {
-  --green:#397b45;
-  --green-dark:#285d33;
-  --green-light:#eaf3eb;
-  --line:#9aa9a0;
-  --ink:#17251b;
-  --muted:#5e6d62;
+  --blue:#365b86;
+  --dark:#28496f;
+  --line:#64748b;
+  --ink:#172033;
 }
 
 * { box-sizing:border-box; }
 
 body {
   margin:0;
-  padding:22px;
-  background:#edf2ee;
+  padding:24px;
+  background:#eef2f6;
   color:var(--ink);
   font-family:Arial,Helvetica,sans-serif;
 }
 
 .page {
-  max-width:1050px;
+  max-width:1000px;
   margin:auto;
+  background:white;
   padding:25px;
-  background:#fff;
-  box-shadow:0 3px 18px #17251b18;
+  box-shadow:0 3px 18px #17203318;
 }
 
 header {
   text-align:center;
-  margin-bottom:15px;
+  margin-bottom:20px;
 }
 
 h1 {
-  margin:0 0 5px;
-  color:var(--green-dark);
-  font-size:25px;
+  color:var(--blue);
+  font-size:24px;
+  margin:0 0 8px;
 }
 
 .subtitle {
   font-size:13px;
-  font-weight:600;
-  color:#405347;
+  font-weight:bold;
 }
 
 .meta {
   display:flex;
   justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
   align-items:center;
-  margin:16px 0 12px;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:15px;
   font-size:13px;
 }
 
-.date-wrap,
-.report-selector {
+.date-wrap,.assigned-wrap {
   display:flex;
   align-items:center;
   gap:8px;
-  font-weight:700;
+  font-weight:bold;
 }
 
-input[type="date"] {
-  padding:6px;
-  border:1px solid var(--line);
+input[type="date"],.assigned-select {
+  border:1px solid #9aa8b8;
   border-radius:4px;
+  padding:7px;
+  background:white;
   font:inherit;
 }
 
-.report-selector select {
-  padding:7px 10px;
-  border:1px solid var(--green);
-  border-radius:4px;
-  background:var(--green-light);
-  color:var(--green-dark);
-  font-weight:700;
-  font-size:13px;
-}
-
-.summary {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin:12px 0;
-}
-
-.stat {
-  border:1px solid #b8c8bb;
-  border-radius:5px;
-  padding:8px;
+.selected-name {
   text-align:center;
-  background:#f7faf7;
+  color:var(--blue);
+  font-size:18px;
+  font-weight:800;
+  margin:8px 0 12px;
 }
 
-.stat strong {
-  display:block;
-  color:var(--green-dark);
-  font-size:19px;
+.table-wrap {
+  width:100%;
 }
-
-.stat span {
-  font-size:13px;
-  color:var(--muted);
-  font-weight:700;
-}
-
-.section-title {
-  margin:15px 0 7px;
-  padding:7px 9px;
-  background:var(--green);
-  color:white;
-  font-size:13px;
-  font-weight:700;
-}
-
-.table-wrap { width:100%; }
 
 table {
   width:100%;
@@ -134,913 +95,964 @@ th,td {
   border:1px solid var(--line);
   padding:5px;
   vertical-align:middle;
-  overflow-wrap:break-word;
 }
 
 th {
-  background:var(--green-light);
-  color:#244d2d;
-  font-size:13px;
+  background:var(--blue);
+  color:white;
+  font-size:12px;
   text-align:center;
+  height:36px;
 }
 
-td { font-size:13px; }
-
-td.time-cell {
-  font-weight:700;
-  text-align:center;
-  white-space:nowrap;
-}
-
-td select,
-td input {
-  width:100%;
-  min-width:0;
-  padding:7px 4px;
-  border:1px solid #c5d0c7;
-  border-radius:3px;
-  background:#fff;
-  color:var(--ink);
-  font:inherit;
-  font-size:13px;
-}
-
-td .custom-task {
-  margin-top:4px;
-  display:none;
-}
-
-td .custom-task.show { display:block; }
-
-.priority-high { color:#b42318; font-weight:700; }
-.priority-medium { color:#9a6700; font-weight:700; }
-.priority-low { color:#26723a; font-weight:700; }
-
-.goals {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:0 14px;
-  border:1px solid var(--line);
-  padding:8px 10px;
-}
-
-.goal {
-  display:flex;
-  align-items:flex-start;
-  gap:7px;
-  min-height:24px;
-  padding:3px 0;
-  font-size:13px;
-}
-
-.goal input {
-  margin:1px 0 0;
-  accent-color:var(--green);
-}
-
-.notes-box {
-  border:1px solid var(--line);
-  min-height:48px;
-  padding:7px;
+td {
   font-size:11px;
 }
 
-.notes-box:focus {
-  outline:2px solid #d5a52b;
-  background:#fffdf2;
-}
-
-.signatures {
-  display:grid;
-  grid-template-columns:1fr;
-  margin:22px 8px 5px;
-}
-
-.signature {
-  max-width:45%;
-  margin:auto;
-  width:100%;
-  border-top:1px solid #33443a;
-  padding-top:6px;
+.time-cell {
+  background:#f4f7fa;
   text-align:center;
-  font-size:12px;
-  font-weight:700;
+}
+
+.time-bracket {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+}
+
+.time-select {
+  width:100%;
+  min-width:0;
+  padding:7px 2px;
+  border:1px solid #aab6c5;
+  border-radius:4px;
+  background:white;
+  font-size:11px;
+  font-weight:bold;
+  text-align:center;
+  color:#172033;
+}
+
+.time-select:disabled {
+  background:#e9edf2;
+  color:#64748b;
+}
+
+.time-connector {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:var(--blue);
+  font-weight:bold;
+}
+
+.time-connector .line {
+  height:10px;
+  width:2px;
+  background:var(--blue);
+}
+
+.cell-editor {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+select {
+  width:100%;
+  min-width:0;
+  padding:6px 3px;
+  border:1px solid #aab6c5;
+  border-radius:3px;
+  background:white;
+  font-size:11px;
+  font-weight:600;
+}
+
+textarea {
+  width:100%;
+  min-height:45px;
+  resize:vertical;
+  padding:5px;
+  border:1px solid #cbd5e1;
+  border-radius:3px;
+  font:10px Arial;
+  color:#172033;
+  background:white;
+}
+
+textarea:focus,select:focus {
+  outline:1px solid var(--blue);
+  background:#fff8d9;
+}
+
+.order-input {
+  min-height:40px;
+  padding:5px;
+  border:1px solid #cbd5e1;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+
+.notes {
+  margin-top:16px;
+  border:1.5px solid #334155;
+}
+
+.notes-title {
+  background:#e8edf3;
+  padding:8px;
+  font-size:13px;
+  font-weight:bold;
+  border-bottom:1px solid #64748b;
+}
+
+.checklist {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px 14px;
+  padding:12px;
+  border-bottom:1px solid #64748b;
+}
+
+.checklist label {
+  display:flex;
+  gap:7px;
+  font-size:11px;
+  line-height:1.4;
+}
+
+.checklist input {
+  width:14px;
+  height:14px;
+  flex-shrink:0;
+  margin:0;
+}
+
+.note-line {
+  min-height:32px;
+  padding:7px;
+  border-bottom:1px solid #94a3b8;
+  outline:none;
+}
+
+.note-line:last-child {
+  border-bottom:0;
 }
 
 .actions {
   display:flex;
-  gap:9px;
   justify-content:center;
   flex-wrap:wrap;
-  margin:20px auto 0;
+  gap:10px;
+  margin-top:20px;
 }
 
 button {
   border:0;
   border-radius:5px;
-  padding:10px 16px;
+  padding:11px 17px;
   color:white;
-  background:var(--green);
-  font-weight:700;
+  background:var(--blue);
+  font-weight:bold;
   cursor:pointer;
 }
 
-button:hover { background:var(--green-dark); }
-button.secondary { background:#64748b; }
+button:hover {
+  background:var(--dark);
+}
+
+button.secondary {
+  background:#64748b;
+}
 
 .hint {
   text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  margin-top:9px;
+  font-size:11px;
+  color:#64748b;
+  margin-top:12px;
 }
 
-
-
-/* MOBILE */
-@media(max-width:650px) {
-  body { padding:7px; }
-  .page { padding:12px; }
-  h1 { font-size:19px; }
-  .summary { grid-template-columns:repeat(3,1fr); }
-  .goals { grid-template-columns:1fr; }
-  .table-wrap { overflow-x:auto; }
-  table { min-width:600px; }
+/* SIGNATURE SECTION */
+.signature-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 35px;
+  padding: 15px 5px;
 }
 
+.signature-box {
+  text-align: center;
+  min-height: 85px;
+}
 
+.signature-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--blue);
+  margin-bottom: 40px;
+}
 
-/* ONE PAGE A4 PORTRAIT PRINT */
+.signature-line {
+  border-bottom: 1px solid #172033;
+  width: 90%;
+  margin: auto;
+}
+
+.signature-caption {
+  font-size: 10px;
+  margin-top: 5px;
+  color: #475569;
+}
+
 @media print {
-
-  @page {
-    size: A4 portrait;
-    margin: 5mm;
+  .signature-section {
+    margin-top: 20px;
+    gap: 15px;
   }
 
-  html, body {
-    width: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: white !important;
+  .signature-title {
+    font-size: 9px;
+  }
+
+  .signature-caption {
+    font-size: 8px;
+  }
+}
+
+@media print {
+  @page {
+    size:A4 portrait;
+    margin:7mm;
   }
 
   body {
-    font-family: Arial, Helvetica, sans-serif;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    padding:0;
+    background:white;
   }
 
   .page {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
+    max-width:none;
+    padding:0;
+    box-shadow:none;
   }
 
-  header {
-    margin-bottom: 5px;
-  }
+  h1 { font-size:18px; }
 
-  h1 {
-    font-size: 19px;
-    margin-bottom: 2px;
-  }
+  .subtitle { font-size:10px; }
 
-  .subtitle {
-    font-size: 11px;
-  }
-
-  .meta {
-    margin: 6px 0;
-    font-size: 9px;
-    gap: 6px;
-  }
-
-  input[type="date"] {
-    border: 0;
-    padding: 0;
-    font-size: 11px;
-  }
-
-  .report-selector select {
-    border: 0;
-    padding: 0;
-    background: transparent;
-    color: var(--ink);
-    font-size: 11px;
-    appearance: none;
-  }
-
-  .summary {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    margin: 5px 0;
-  }
-
-  .stat {
-    padding: 5px;
-  }
-
-  .stat strong {
-    font-size: 15px;
-  }
-
-  .stat span {
-    font-size: 11px;
-  }
-
-  .section-title {
-    margin: 7px 0 3px;
-    padding: 5px 7px;
-    font-size: 11px;
-    break-after: avoid;
-  }
-
-  table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-  }
-
-  th, td {
-    padding: 3px 4px;
-    line-height: 1.05;
+  .actions,.hint {
+    display:none !important;
   }
 
   th {
-    font-size: 11px;
+    background:var(--blue) !important;
+    color:white !important;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+    font-size:8px;
+    padding:4px 2px;
+  }
+
+  tbody tr {
+    height:72px;
+    break-inside:avoid;
   }
 
   td {
-    font-size: 11px;
+    padding:3px;
+    font-size:8px;
   }
 
-  td.time-cell {
-    font-size: 11px;
+  .time-select,select {
+    appearance:none;
+    -webkit-appearance:none;
+    border:0;
+    background:transparent;
+    padding:3px 0;
+    font-size:8px;
   }
 
-  td select,
-  td input {
-    padding: 3px 2px;
-    font-size:12px;
-    border: 0;
-    background: transparent;
+  .time-connector .line {
+    height:7px;
+  }
+
+  textarea {
+    min-height:33px;
+    height:33px;
+    resize:none;
+    border:0;
+    border-top:1px dotted #94a3b8;
+    padding:3px 1px;
+    font-size:8px;
+    overflow:hidden;
+  }
+
+  textarea::placeholder {
+    color:transparent;
+  }
+
+  .order-input {
+    border:0;
+    font-size:9px;
+  }
+
+  .notes-title {
+    font-size:10px;
+    padding:5px;
+  }
+
+  .checklist {
+    gap:5px 8px;
+    padding:7px;
+  }
+
+  .checklist label {
+    font-size:8px;
+  }
+
+  .checklist input {
+    width:10px;
+    height:10px;
+  }
+
+  .note-line {
+    min-height:23px;
+    font-size:9px;
+  }
+
+  .selected-name {
+    font-size:14px;
+    margin:5px 0;
+  }
+
+  .assigned-select {
+    appearance:none;
+    border:0;
+  }
+}
+
+@media(max-width:650px) {
+  body { padding:6px; }
+  .page { padding:10px; }
+  .table-wrap { overflow-x:auto; }
+  table { min-width:700px; }
+}
+
+/* ASSIGNMENT AND DEPARTMENT */
+.assignment-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.department-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+}
+
+.department-select {
+  border: 1px solid #9aa8b8;
+  border-radius: 4px;
+  padding: 7px;
+  background: white;
+  font: inherit;
+}
+
+.prepared-name {
+  font-size: 20px; /* Bigger assigned name */
+  font-weight: 800;
+  color: var(--ink);
+  min-height: 25px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.signature-box:first-child .signature-title {
+  margin-bottom: 8px;
+}
+
+@media print {
+  .department-select {
     appearance: none;
-    -webkit-appearance: none;
+    border: 0;
+    padding: 3px 0;
   }
 
-  td .custom-task {
-    display: none !important;
+  .prepared-name {
+    font-size: 9px;
+  }
+}
+/* BIGGER PRIORITY AND STATUS TEXT */
+.priority,
+.status,
+.priority select,
+.status select {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+
+/* Make the entire priority and status row bigger */
+.priority-wrap,
+.status-wrap {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+/* For printing */
+@media print {
+  .priority,
+  .status,
+  .priority select,
+  .status select,
+  .priority-wrap,
+  .status-wrap {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+}
+/* BIGGER PRIORITY AND STATUS TEXT */
+#scheduleRows td:nth-child(2) .cell-editor select,
+#scheduleRows td:nth-child(3) .cell-editor select {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  min-height: 38px;
+  padding: 8px 5px;
+}
+
+#scheduleRows td:nth-child(2) .cell-editor textarea,
+#scheduleRows td:nth-child(3) .cell-editor textarea {
+  font-size: 13px !important;
+  font-weight: 600;
+  min-height: 55px;
+}
+
+/* PRINT FONT SIZE */
+@media print {
+  #scheduleRows td:nth-child(2) .cell-editor select,
+  #scheduleRows td:nth-child(3) .cell-editor select {
+    font-size: 11px !important;
+    font-weight: 800 !important;
   }
 
-  td .custom-task.show {
-    display: block !important;
+  #scheduleRows td:nth-child(2) .cell-editor textarea,
+  #scheduleRows td:nth-child(3) .cell-editor textarea {
+    font-size: 10px !important;
+    font-weight: bold;
   }
+}
+/* UNIFORM FONT SIZE FOR ALL TASK TABLE COLUMNS */
+#scheduleRows td {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
 
-  .goals {
-    grid-template-columns: 1fr 1fr;
-    padding: 5px 7px;
-    gap: 1px 8px;
-  }
+/* All dropdowns */
+#scheduleRows select,
+#scheduleRows .time-select {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #172033;
+}
 
-  .goal {
-    min-height: 17px;
-    font-size:11px;
-    padding: 2px 0;
-    gap: 5px;
-  }
+/* All message boxes */
+#scheduleRows textarea {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
 
-  .goal input {
-    transform: scale(.85);
-    transform-origin: top left;
-  }
+/* Task number and order number */
+#scheduleRows .task-number,
+#scheduleRows .order-input {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
 
-  .notes-box {
-    min-height: 38px;
-    padding: 5px;
-    font-size: 11px;
-  }
-
-  .signatures {
-    margin: 18px 8px 4px;
-  }
-
-  .signature {
-    max-width: 45%;
-    font-size: 11px;
-    padding-top: 5px;
-  }
-
-  .actions,
-  .hint {
-    display: none !important;
-  }
-
-  body.show-samuel #noelRows,
-  body.show-noel #samuelRows {
-    display: none !important;
-  }
-
-  .page,
-  .table-wrap,
-  .goals,
-  .notes-box,
-  .signatures {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+/* PRINT: Keep all columns consistent */
+@media print {
+  #scheduleRows td,
+  #scheduleRows select,
+  #scheduleRows .time-select,
+  #scheduleRows textarea,
+  #scheduleRows .task-number,
+  #scheduleRows .order-input {
+    font-size: 10px !important;
+    font-weight: 700 !important;
   }
 }
 </style>
 </head>
 
-<body class="show-samuel">
+<body>
 
 <div class="page">
 
-  <header>
-    <h1>SM DECOR TEAM DAILY WORK REPORT</h1>
-    <div class="subtitle">
-      Working Hours: 10:30 AM – 9:30 PM
-    </div>
-  </header>
+<header>
+  <h1>SM OPERATION DAILY WORK SCHEDULE</h1>
+  <div class="subtitle">
+    Working Hours: 10:30 AM - 9:30 PM
+  </div>
+</header>
 
-  <div class="meta">
+<div class="meta">
 
-    <div class="date-wrap">
-      <label for="reportDate">REPORT DATE:</label>
-      <input id="reportDate" type="date">
-    </div>
+  <div class="date-wrap">
+    <label>REPORT DATE:</label>
+    <input type="date" id="reportDate">
+  </div>
 
-    <div class="report-selector">
-      <label for="personSelect">SELECT REPORT:</label>
-     <select id="personSelect" onchange="switchPerson()">
-  <option value="Samuel">SAMUEL</option>
-  <option value="Noel">NOEL</option>
-  <option value="Ronelyn">RONELYN </option>
-  <option value="Jeangay">JEANGAY </option>
-  <option value="Melanie">MELANIE </option>
-  <option value="Nea">NEA </option>
-  <option value="Eva">EVA </option>
-  <option value="Kimberly">KIMBERLY </option>
-</select>
-    </div>
+ 
+<div class="assignment-fields">
 
-    <div>
-      <strong>PERSON:</strong>
-      <span id="personLabel">SAMUEL</span>
-    </div>
+  <div class="assigned-wrap">
+    <label>ASSIGNED TO:</label>
+
+    <select id="assignedName"
+      class="assigned-select"
+      onchange="updateAssignedName()">
+
+      <option value="">Select Name</option>
+      <option>Noel</option>
+      <option>Samuel</option>
+      <option>Christal</option>
+      <option>Juliano</option>
+      <option>Altaf</option>
+      <option>Michelle</option>
+      <option>Joan</option>
+      <option>Hensly</option>
+      <option>Rochelle</option>
+      <option>Elvin</option>
+      <option>Ann</option>
+      <option>Tracy</option>
+      <option>Eva</option>
+      <option>Nea</option>
+      <option>John Paul</option>
+      <option>Romy</option>
+      <option>Arvin</option>
+      <option>Fritz</option>
+      <option>Randy</option>
+
+    </select>
+  </div>
+
+  <div class="department-wrap">
+    <label>DEPARTMENT:</label>
+
+    <select id="departmentSelect" class="department-select">
+      <option value="">Select Department</option>
+      <option>Editing Team</option>
+      <option>Decorators Team</option>
+      <option>Flowers Team</option>
+      <option>Cookies Team</option>
+      <option>Baker</option>
+      <option>Froster</option>
+      <option>Coverer</option>
+    </select>
+  </div>
+
+</div>
+
+
+</div>
+
+<div class="selected-name" id="displayName"></div>
+
+<div class="table-wrap">
+
+<table>
+
+<colgroup>
+  <col style="width:22%">
+  <col style="width:19%">
+  <col style="width:19%">
+  <col style="width:23%">
+  <col style="width:17%">
+</colgroup>
+
+<thead>
+<tr>
+  <th>TIME START / FINISH</th>
+  <th>PRIORITY</th>
+  <th>STATUS</th>
+  <th>CAKE TYPE</th>
+  <th>ORDER NO.</th>
+</tr>
+</thead>
+
+<tbody id="scheduleRows"></tbody>
+
+</table>
+</div>
+
+<section class="notes">
+
+  <div class="notes-title">DAILY GOALS / CHECKLIST</div>
+
+  <div class="checklist">
+
+    <label><input type="checkbox"> Complete assigned editing orders.</label>
+    <label><input type="checkbox"> Check pending orders.</label>
+    <label><input type="checkbox"> Prioritize urgent orders.</label>
+    <label><input type="checkbox"> Review spelling and design details.</label>
+    <label><input type="checkbox"> Check image quality and resolution.</label>
+    <label><input type="checkbox"> Prepare files for printing or production.</label>
+    <label><input type="checkbox"> Coordinate with Cookies Team.</label>
+    <label><input type="checkbox"> Coordinate with Figurine Team.</label>
+    <label><input type="checkbox"> Coordinate with Flower Team.</label>
+    <label><input type="checkbox"> Check completed orders.</label>
+    <label><input type="checkbox"> Report unfinished tasks.</label>
+    <label><input type="checkbox"> Prepare tomorrow's priority list.</label>
 
   </div>
 
-  <!-- SUMMARY -->
-  <div class="summary" aria-live="polite">
+  <div class="notes-title">ADDITIONAL NOTES</div>
 
-    <div class="stat">
-      <strong id="taskCount">0</strong>
-      <span id="taskLabel">SAMUEL TASKS</span>
-    </div>
+  <div class="note-line" contenteditable="true"></div>
+  <div class="note-line" contenteditable="true"></div>
 
-    <div class="stat">
-      <strong id="completedCount">0</strong>
-      <span>COMPLETED TASKS</span>
-    </div>
+</section>
 
-    <div class="stat">
-      <strong id="pendingCount">0</strong>
-      <span>PENDING TASKS</span>
-    </div>
+<!-- SIGNATURE SECTION -->
 
+<div class="signature-box">
+
+  <div class="signature-title">PREPARED BY</div>
+
+  <div class="prepared-name" id="preparedByName"></div>
+
+  <div class="signature-line"></div>
+
+  <div class="signature-caption">Signature</div>
+
+</div>
+
+  <div class="signature-box">
+    <div class="signature-title">CHECKED BY</div>
+    <div class="signature-line"></div>
+    <div class="signature-caption">Name & Signature</div>
   </div>
 
-  <div class="section-title">DAILY TASK ASSIGNMENTS</div>
-
-  <div class="table-wrap">
-
-    <table aria-label="Daily task assignments">
-
-      <colgroup>
-        <col style="width:12%">
-        <col style="width:24%">
-        <col style="width:14%">
-        <col style="width:23%">
-        <col style="width:27%">
-      </colgroup>
-
-      <thead>
-        <tr>
-          <th>TIME</th>
-          <th>TASK</th>
-          <th>PRIORITY</th>
-          <th>STATUS</th>
-          <th>ORDER NO.</th>
-        </tr>
-      </thead>
-
-     <tbody id="rows-samuel" class="person-rows"></tbody>
-<tbody id="rows-noel" class="person-rows"></tbody>
-<tbody id="rows-ronelyn" class="person-rows"></tbody>
-<tbody id="rows-jeangay" class="person-rows"></tbody>
-<tbody id="rows-melanie" class="person-rows"></tbody>
-<tbody id="rows-nea" class="person-rows"></tbody>
-<tbody id="rows-eva" class="person-rows"></tbody>
-<tbody id="rows-kimberly" class="person-rows"></tbody>
-
-    </table>
+  <div class="signature-box">
+    <div class="signature-title">APPROVED BY</div>
+    <div class="signature-line"></div>
+    <div class="signature-caption">Name & Signature</div>
   </div>
 
-  <!-- DAILY GOALS -->
-  <div class="section-title">DAILY GOALS / CHECKLIST</div>
+</div>
 
-  <div class="goals" id="goals">
+<div class="actions">
 
-    <label class="goal">
-      <input type="checkbox">
-      Complete assigned editing orders.
-    </label>
+  <button onclick="window.print()" type="button">
+    PRINT DAILY REPORT
+  </button>
 
-    <label class="goal">
-      <input type="checkbox">
-      Check pending orders.
-    </label>
+  <button onclick="clearReport()" type="button"
+    class="secondary">
+    CLEAR REPORT
+  </button>
 
-    <label class="goal">
-      <input type="checkbox">
-      Prioritize urgent orders.
-    </label>
+</div>
 
-    <label class="goal">
-      <input type="checkbox">
-      Review spelling and design details.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Check image quality and resolution.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Prepare files for printing or production.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Coordinate with Cookies Team.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Coordinate with Figurine Team.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Coordinate with Flower Team.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Check completed orders.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Report unfinished tasks.
-    </label>
-
-    <label class="goal">
-      <input type="checkbox">
-      Prepare tomorrow's priority list.
-    </label>
-
-  </div>
-
-  <!-- NOTES -->
-  <div class="section-title">ADDITIONAL NOTES / HANDOVER</div>
-
-  <div class="notes-box"
-       contenteditable="true"
-       aria-label="Additional notes and handover"></div>
-
-  <!-- SIGNATURE -->
-  <div class="signatures">
-    <div class="signature" id="signatureName">
-      SAMUEL – SIGNATURE
-    </div>
-  </div>
-
-  <!-- BUTTONS -->
-  <div class="actions">
-
-    <button type="button" onclick="printReport()">
-      PRINT A4 DAILY REPORT
-    </button>
-
-    <button type="button"
-            class="secondary"
-            onclick="newWorkingDay()">
-      CLEAR REPORT / NEXT WORKING DAY
-    </button>
-
-  </div>
-
-  <div class="hint">
-    Select NAMES to display and print
-    only that person's daily report.
-    Records are kept separately.
-  </div>
+<div class="hint">
+ Select a finish time to reveal the next task.
+Choose each next task's start time manually.
+Start time cannot be earlier than the previous task's finish time..
+</div>
 
 </div>
 
 <script>
 
-const taskOptions = [
-  "Assign Decor",
-  "Joan",
-  "Hensly",
-  "Altaf",
-  "Michelle",
-  "Christal",
-  "Juliano",
-  "Cookies Team",
-  "Figurine Team",
-  "Flower Team",
-  "Other / Custom Task"
-];
 
-const priorities = [
-  "",
-  "🔴 URGENT",
-  "🟡 DUE NEXT DAY",
-  "🟢 ASSIGN DECOR"
-];
+// Create available times every 15 minutes.
+const availableTimes = [];
 
-const statuses = [
-  "",
-  "Not Started",
-  "In Progress",
-  "Completed",
-  "Pending Approval",
-  "On Hold",
-  "Delayed"
-];
+for (let minutes = 10 * 60 + 30;
+     minutes <= 21 * 60 + 30;
+     minutes += 15) {
 
-/* CREATE SELECT OPTIONS */
-function makeSelect(options, label) {
+  const hour24 = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  const suffix = hour24 >= 12 ? "PM" : "AM";
+  let hour12 = hour24 % 12;
+  if (hour12 === 0) hour12 = 12;
 
-  const select = document.createElement("select");
-
-  select.setAttribute("aria-label", label);
-
-  options.forEach(value => {
-
-    const option = document.createElement("option");
-
-    option.value = value;
-    option.textContent = value || "Select";
-
-    select.appendChild(option);
-
+  availableTimes.push({
+    value: minutes,
+    label: `${hour12}:${String(minute).padStart(2,"0")} ${suffix}`
   });
-
-  return select;
 }
 
-/* CREATE DAILY TIME ROWS */
-function buildRows(person, tbodyId) {
+const priorityOptions = ["", "Urgent", "Tomorrow", "Next Day"];
+const statusOptions = ["", "Not Started", "In Progress", "Completed", "On Hold"];
+const cakeOptions = ["", "Frosted Cake", "Fondant Cake", "Shape Cake"];
+const tbody = document.getElementById("scheduleRows");
 
-  const tbody = document.getElementById(tbodyId);
+function makeOptions(items) {
+  return items.map(item =>
+    `<option value="${item}">${item || "Select..."}</option>`
+  ).join("");
+}
 
-  let hour = 10;
-  let minute = 30;
+function makeTimeOptions(minimum, selected = "", placeholder = "Select time") {
+  let html = `<option value="">${placeholder}</option>`;
 
-  while (true) {
-
-    const suffix = hour >= 12 ? "PM" : "AM";
-
-    let displayHour = hour % 12;
-
-    if (!displayHour) displayHour = 12;
-
-    const time =
-      `${displayHour}:${String(minute).padStart(2,"0")} ${suffix}`;
-
-    const tr = document.createElement("tr");
-
-    /* TIME */
-    const timeCell = document.createElement("td");
-
-    timeCell.className = "time-cell";
-    timeCell.textContent = time;
-
-    tr.appendChild(timeCell);
-
-    /* TASK */
-    const taskCell = document.createElement("td");
-
-    const taskSelect = makeSelect(
-      ["", ...taskOptions],
-      `${person} task at ${time}`
-    );
-
-    taskSelect.className = "task-select";
-
-    const custom = document.createElement("input");
-
-    custom.type = "text";
-    custom.placeholder = "Enter custom task";
-    custom.className = "custom-task";
-
-    taskSelect.addEventListener("change", () => {
-
-      custom.classList.toggle(
-        "show",
-        taskSelect.value === "Other / Custom Task"
-      );
-
-      if (taskSelect.value !== "Other / Custom Task") {
-        custom.value = "";
-      }
-
-      updateSummary();
-
-    });
-
-    custom.addEventListener("input", updateSummary);
-
-    taskCell.append(taskSelect, custom);
-
-    tr.appendChild(taskCell);
-
-    /* PRIORITY */
-    const priorityCell = document.createElement("td");
-
-    const prioritySelect = makeSelect(
-      priorities,
-      `${person} priority at ${time}`
-    );
-
-    prioritySelect.addEventListener("change", () => {
-
-      prioritySelect.className =
-        prioritySelect.value.includes("High") ? "priority-high" :
-        prioritySelect.value.includes("Medium") ? "priority-medium" :
-        prioritySelect.value.includes("Low") ? "priority-low" : "";
-
-    });
-
-    priorityCell.appendChild(prioritySelect);
-
-    tr.appendChild(priorityCell);
-
-    /* STATUS */
-    const statusCell = document.createElement("td");
-
-    const statusSelect = makeSelect(
-      statuses,
-      `${person} status at ${time}`
-    );
-
-    statusSelect.className = "status-select";
-
-    statusSelect.addEventListener("change", updateSummary);
-
-    statusCell.appendChild(statusSelect);
-
-    tr.appendChild(statusCell);
-
-    /* ORDER NUMBER */
-    const orderCell = document.createElement("td");
-
-    const orderInput = document.createElement("input");
-
-    orderInput.type = "text";
-    orderInput.placeholder = "Order #";
-
-    orderInput.setAttribute(
-      "aria-label",
-      `${person} order number at ${time}`
-    );
-
-    orderCell.appendChild(orderInput);
-
-    tr.appendChild(orderCell);
-
-    tbody.appendChild(tr);
-
-    /* STOP AT 9:30 PM */
-    if (hour === 21 && minute === 30) break;
-
-    minute += 30;
-
-    if (minute === 60) {
-      minute = 0;
-      hour++;
+  availableTimes.forEach(time => {
+    if (time.value >= minimum) {
+      html += `
+        <option value="${time.value}"
+          ${String(time.value) === String(selected) ? "selected" : ""}>
+          ${time.label}
+        </option>
+      `;
     }
-
-  }
-
-  tbody.addEventListener("input", updateSummary);
-  tbody.addEventListener("change", updateSummary);
-
-}
-
-function switchPerson() {
-
-  const selected =
-    document.getElementById("personSelect").value;
-
-  // Hide all reports
-  document.querySelectorAll(".person-rows").forEach(tbody => {
-    tbody.style.display = "none";
   });
 
-  // Show only selected person's report
-  const selectedRows = document.getElementById(
-    "rows-" + selected.toLowerCase()
-  );
+  return html;
+}
 
-  if (selectedRows) {
-    selectedRows.style.display = "table-row-group";
+// Remove all tasks after a selected row.
+function removeRowsAfter(row) {
+  let next = row.nextElementSibling;
+
+  while (next) {
+    const remove = next;
+    next = next.nextElementSibling;
+    remove.remove();
   }
-
-  document.getElementById("personLabel").textContent =
-    selected.toUpperCase();
-
-  document.getElementById("taskLabel").textContent =
-    selected.toUpperCase() + " TASKS";
-
-  document.getElementById("signatureName").textContent =
-    selected.toUpperCase() + " – SIGNATURE";
-
-  updateSummary();
 }
 
-/* CHECK IF ROW HAS A TASK */
-function hasTask(row) {
+// Create task row.
+function addRow(taskNumber, minimumStart = availableTimes[0].value) {
 
-  const selected =
-    row.querySelector(".task-select")?.value || "";
+  const tr = document.createElement("tr");
+  tr.dataset.taskNumber = taskNumber;
 
-  const custom =
-    row.querySelector(".custom-task")?.value.trim() || "";
+  tr.innerHTML = `
+    <td class="time-cell">
+      <div class="time-bracket">
 
-  return selected &&
-    (selected !== "Other / Custom Task" || custom.length > 0);
+        <div class="task-number">TASK ${taskNumber}</div>
 
-}
+        <select class="time-select start-time">
+          ${makeTimeOptions(minimumStart, "", "Select start")}
+        </select>
 
-function updateSummary() {
+        <div class="time-connector">
+          <div class="line"></div>
+          ↓
+          <div class="line"></div>
+        </div>
 
-  const selected =
-    document.getElementById("personSelect").value;
+        <select class="time-select finish-time" disabled>
+          <option value="">Select start first</option>
+        </select>
 
-  const tbody = document.getElementById(
-    "rows-" + selected.toLowerCase()
-  );
+      </div>
+    </td>
 
-  const rows = [...tbody.querySelectorAll("tr")];
+    <td>
+      <div class="cell-editor">
+        <select>${makeOptions(priorityOptions)}</select>
+        <textarea placeholder="Add priority message..."></textarea>
+      </div>
+    </td>
 
-  const validRows = rows.filter(hasTask);
+    <td>
+      <div class="cell-editor">
+        <select>${makeOptions(statusOptions)}</select>
+        <textarea placeholder="Add status message..."></textarea>
+      </div>
+    </td>
 
-  const completed = validRows.filter(row =>
-    row.querySelector(".status-select")?.value === "Completed"
-  ).length;
+    <td>
+      <div class="cell-editor">
+        <select>${makeOptions(cakeOptions)}</select>
+        <textarea placeholder="Add cake type message..."></textarea>
+      </div>
+    </td>
 
-  document.getElementById("taskCount").textContent =
-    validRows.length;
+    <td>
+      <div class="order-input" contenteditable="true"></div>
+    </td>
+  `;
 
-  document.getElementById("completedCount").textContent =
-    completed;
+  tbody.appendChild(tr);
 
-  document.getElementById("pendingCount").textContent =
-    validRows.length - completed;
-}
+  const start = tr.querySelector(".start-time");
+  const finish = tr.querySelector(".finish-time");
 
-/* PRINT ONLY THE SELECTED PERSON */
-function printReport() {
-
-  switchPerson();
-
-  window.print();
-
-}
-
-/* LOCAL DATE */
-function localDateString(date) {
-
-  const local = new Date(
-    date.getTime() - date.getTimezoneOffset() * 60000
-  );
-
-  return local.toISOString().slice(0,10);
-
-}
-
-/* NEXT WORKING DAY */
-function nextWorkingDay(date) {
-
-  const next = new Date(date);
-
-  next.setDate(next.getDate() + 1);
-
-  while (
-    next.getDay() === 0 ||
-    next.getDay() === 6
-  ) {
-    next.setDate(next.getDate() + 1);
-  }
-
-  return next;
-
-}
-
-/* CLEAR BOTH REPORTS */
-function newWorkingDay() {
-
-  if (!confirm(
-    "Clear both Samuel and Noel reports and prepare a blank report for the next working day?"
-  )) return;
-
-  /* CLEAR ALL TASK SELECTS */
-  document.querySelectorAll(
-    ".person-rows select"
-  ).forEach(el => {
-    el.selectedIndex = 0;
-    el.className = el.classList.contains("status-select")
-      ? "status-select"
-      : el.className.includes("task-select")
-        ? "task-select"
-        : "";
+  start.addEventListener("change", () => {
+    updateFinishOptions(tr);
+    syncFollowingTasks(tr);
   });
 
-  /* CLEAR ALL INPUTS */
-  document.querySelectorAll(
-    ".person-rows input"
-  ).forEach(el => {
+  finish.addEventListener("change", () => {
+    syncFollowingTasks(tr);
+  });
+
+  return tr;
+}
+
+// Finish time must be later than start time.
+function updateFinishOptions(row) {
+
+  const start = row.querySelector(".start-time");
+  const finish = row.querySelector(".finish-time");
+
+  const startValue = Number(start.value);
+  const oldFinish = Number(finish.value);
+
+  if (!startValue) {
+    finish.innerHTML = `<option value="">Select start first</option>`;
+    finish.disabled = true;
+    return;
+  }
+
+  const validFinish = oldFinish > startValue ? oldFinish : "";
+
+  finish.innerHTML = makeTimeOptions(
+    startValue + 15,
+    validFinish,
+    "Select finish"
+  );
+
+  finish.disabled = false;
+}
+
+// Automatically reveal next task.
+// Next task start is selectable, but cannot be earlier
+// than the previous task's finish time.
+function syncFollowingTasks(row) {
+
+  const finish = row.querySelector(".finish-time");
+
+  if (!finish.value) {
+    removeRowsAfter(row);
+    return;
+  }
+
+  const minimumNextStart = Number(finish.value);
+
+  let nextRow = row.nextElementSibling;
+
+  // Create next task if it does not exist.
+  if (!nextRow) {
+    addRow(
+      Number(row.dataset.taskNumber) + 1,
+      minimumNextStart
+    );
+    return;
+  }
+
+  const nextStart = nextRow.querySelector(".start-time");
+  const nextFinish = nextRow.querySelector(".finish-time");
+
+  const oldStart = Number(nextStart.value);
+
+  // Keep previous selection only if still valid.
+  const validStart =
+    oldStart >= minimumNextStart ? oldStart : "";
+
+  nextStart.innerHTML = makeTimeOptions(
+    minimumNextStart,
+    validStart,
+    "Select start"
+  );
+
+  if (validStart) {
+
+    nextStart.value = String(validStart);
+
+    const oldNextFinish = Number(nextFinish.value);
+
+    const validNextFinish =
+      oldNextFinish > validStart ? oldNextFinish : "";
+
+    nextFinish.innerHTML = makeTimeOptions(
+      validStart + 15,
+      validNextFinish,
+      "Select finish"
+    );
+
+    nextFinish.disabled = false;
+
+  } else {
+
+    nextStart.value = "";
+
+    nextFinish.innerHTML =
+      `<option value="">Select start first</option>`;
+
+    nextFinish.disabled = true;
+  }
+
+  // Continue checking the following tasks.
+  syncFollowingTasks(nextRow);
+}
+
+// Start with Task 1 only.
+addRow(1);
+
+
+function updateAssignedName() {
+
+  const name = document.getElementById("assignedName").value;
+
+  document.getElementById("displayName").textContent =
+    name ? "ASSIGNED TO: " + name : "";
+
+  // Automatically display assigned name in PREPARED BY.
+  document.getElementById("preparedByName").textContent = name;
+
+}
+
+// Today's date.
+const now = new Date();
+
+const localDate = new Date(
+  now.getTime() - now.getTimezoneOffset() * 60000
+).toISOString().slice(0,10);
+
+document.getElementById("reportDate").value = localDate;
+
+// Clear report.
+function clearReport() {
+
+  if (!confirm("Clear the entire daily decoration report?")) {
+    return;
+  }
+
+  document.getElementById("assignedName").selectedIndex = 0;
+document.getElementById("departmentSelect").selectedIndex = 0;
+
+  updateAssignedName();
+
+  tbody.innerHTML = "";
+
+  addRow(1);
+
+  document.querySelectorAll("textarea").forEach(el => {
     el.value = "";
-    el.classList.remove("show");
   });
 
-  /* RESET GOALS */
-  document.querySelectorAll(
-    "#goals input[type=checkbox]"
-  ).forEach(el => {
+  document.querySelectorAll(".order-input,.note-line").forEach(el => {
+    el.textContent = "";
+  });
+
+  document.querySelectorAll(".checklist input").forEach(el => {
     el.checked = false;
   });
 
-  /* CLEAR NOTES */
-  document.querySelector(".notes-box").textContent = "";
-
-  /* NEXT WORKING DATE */
-  const current =
-    document.getElementById("reportDate").value
-      ? new Date(
-          document.getElementById("reportDate").value + "T12:00:00"
-        )
-      : new Date();
-
-  document.getElementById("reportDate").value =
-    localDateString(nextWorkingDay(current));
-
-  /* RETURN TO SAMUEL */
-  document.getElementById("personSelect").value = "Samuel";
-
-  switchPerson();
-
+  document.getElementById("reportDate").value = localDate;
 }
-
-/* INITIALIZE */
-document.getElementById("reportDate").value =
-  localDateString(new Date());
-
-const employees = [
-  "Samuel",
-  "Noel",
-  "Ronelyn",
-  "Jeangay",
-  "Melanie",
-  "Nea",
-  "Eva",
-  "Kimberly"
-];
-
-employees.forEach(person => {
-  buildRows(
-    person,
-    "rows-" + person.toLowerCase()
-  );
-});
-
-switchPerson();
-updateSummary();
 
 </script>
 
